@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CherishKin — Family Care, Reimagined</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cherry: #8B1A1A;
+    --cherry-light: #C0392B;
+    --cream: #FAF7F2;
+    --stem: #3B7A2A;
+    --brown-dark: #1C0A06;
+    --brown-mid: #6D4C41;
+    --brown-light: #E8D5C4;
+    --terracotta: #E8956D;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--brown-dark);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(250, 247, 242, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(139, 26, 26, 0.08);
+  }
+
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--brown-dark);
+    letter-spacing: 0.02em;
+  }
+
+  .logo span { color: var(--cherry); }
+
+  .cherry-icon {
+    display: inline-block;
+    margin-right: 6px;
+    font-size: 18px;
+  }
+
+  nav a {
+    font-size: 13px;
+    color: var(--brown-mid);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  nav a:hover { color: var(--cherry); }
+
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 120px 48px 80px;
+    gap: 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .hero-text { animation: fadeUp 1s ease both; }
+
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cherry);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .eyebrow::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--cherry);
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(48px, 6vw, 80px);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 28px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--cherry);
+  }
+
+  .hero-desc {
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--brown-mid);
+    max-width: 420px;
+    margin-bottom: 48px;
+  }
+
+  .cta-group { display: flex; gap: 16px; align-items: center; }
+
+  .btn-primary {
+    background: var(--cherry);
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    border-radius: 40px;
+    transition: all 0.25s;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-primary:hover {
+    background: var(--cherry-light);
+    transform: translateY(-1px);
+  }
+
+  .btn-ghost {
+    font-size: 13px;
+    color: var(--brown-mid);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+  }
+
+  .btn-ghost:hover { color: var(--cherry); }
+
+  .hero-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeUp 1s 0.2s ease both;
+  }
+
+  .phone-frame {
+    width: 280px;
+    height: 560px;
+    background: var(--brown-dark);
+    border-radius: 40px;
+    padding: 16px;
+    box-shadow: 0 40px 80px rgba(28, 10, 6, 0.25), 0 0 0 1px rgba(255,255,255,0.05);
+    position: relative;
+  }
+
+  .phone-screen {
+    width: 100%;
+    height: 100%;
+    background: var(--cream);
+    border-radius: 28px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .phone-call-bg {
+    flex: 1;
+    background: linear-gradient(160deg, #f5ede8 0%, #faf7f2 50%, #e8d5c4 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    position: relative;
+  }
+
+  .silhouette-group {
+    display: flex;
+    gap: -16px;
+    align-items: flex-end;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+
+  .silhouette {
+    width: 72px;
+    height: 120px;
+    position: relative;
+  }
+
+  .silhouette svg { width: 100%; height: 100%; }
+
+  .pulse-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--stem);
+    border-radius: 50%;
+    position: absolute;
+    top: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: pulse 2s infinite;
+  }
+
+  .metrics-panel {
+    background: rgba(139, 26, 26, 0.08);
+    border-radius: 16px;
+    padding: 12px 16px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .metric-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .metric-label {
+    font-size: 10px;
+    color: var(--brown-mid);
+    letter-spacing: 0.05em;
+  }
+
+  .metric-bar {
+    flex: 1;
+    height: 3px;
+    background: var(--brown-light);
+    border-radius: 2px;
+    margin: 0 10px;
+    overflow: hidden;
+  }
+
+  .metric-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--cherry);
+    animation: fillBar 2s ease-out both;
+  }
+
+  .metric-value {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--cherry);
+  }
+
+  .phone-bottom {
+    padding: 12px 16px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .phone-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+
+  .phone-btn.call { background: var(--cherry); }
+  .phone-btn.mute { background: var(--brown-light); }
+
+  .cherry-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 20px;
+  }
+
+  section { padding: 80px 48px; max-width: 1200px; margin: 0 auto; }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    padding: 80px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .feature-card {
+    background: white;
+    border-radius: 20px;
+    padding: 36px 28px;
+    border: 1px solid rgba(139, 26, 26, 0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(28, 10, 6, 0.08);
+  }
+
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(139, 26, 26, 0.08);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .feature-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .feature-card p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--brown-mid);
+  }
+
+  .tagline-section {
+    text-align: center;
+    padding: 100px 48px;
+    background: var(--brown-dark);
+    color: var(--cream);
+  }
+
+  .tagline-section h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 300;
+    line-height: 1.15;
+    max-width: 700px;
+    margin: 0 auto 32px;
+  }
+
+  .tagline-section h2 em {
+    font-style: italic;
+    color: var(--terracotta);
+  }
+
+  .tagline-section p {
+    font-size: 15px;
+    color: rgba(250, 247, 242, 0.6);
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .how-it-works {
+    padding: 100px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cherry);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--cherry);
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 300;
+    margin-bottom: 64px;
+    max-width: 600px;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
+    position: relative;
+  }
+
+  .steps::before {
+    content: '';
+    position: absolute;
+    top: 24px;
+    left: calc(16.66% + 24px);
+    right: calc(16.66% + 24px);
+    height: 1px;
+    background: var(--brown-light);
+  }
+
+  .step { position: relative; }
+
+  .step-num {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--cream);
+    border: 2px solid var(--cherry);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--cherry);
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .step h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .step p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--brown-mid);
+  }
+
+  footer {
+    background: var(--brown-dark);
+    color: rgba(250, 247, 242, 0.5);
+    padding: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+  }
+
+  footer .logo { color: var(--cream); }
+
+  .contact-link {
+    color: rgba(250, 247, 242, 0.5);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .contact-link:hover { color: var(--terracotta); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
+    50% { opacity: 0.4; transform: translateX(-50%) scale(1.5); }
+  }
+
+  @keyframes fillBar {
+    from { width: 0; }
+  }
+
+  .fill-72 { width: 72%; }
+  .fill-85 { width: 85%; }
+  .fill-60 { width: 60%; }
+
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; gap: 48px; }
+    .hero-visual { display: none; }
+    .features { grid-template-columns: 1fr; padding: 48px 24px; }
+    .steps { grid-template-columns: 1fr; gap: 32px; }
+    .steps::before { display: none; }
+    nav { padding: 16px 24px; }
+    section, .how-it-works { padding: 60px 24px; }
+    footer { flex-direction: column; gap: 16px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">🍒 Cherish<span>Kin</span></div>
+  <a href="mailto:yuleshster@gmail.com">Contact</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-text">
+    <div class="eyebrow">Family Health Monitoring</div>
+    <h1>Care happens<br>in the <em>moment</em><br>of love</h1>
+    <p class="hero-desc">CherishKin turns regular family video calls into passive health monitoring for elderly relatives. No devices. No behavior change. Just a family call — and AI does the rest.</p>
+    <div class="cta-group">
+      <a href="mailto:yuleshster@gmail.com" class="btn-primary">Request Early Access</a>
+      <a href="#how-it-works" class="btn-ghost">How it works →</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="phone-frame">
+      <div class="phone-screen">
+        <div class="phone-call-bg">
+          <div class="cherry-badge">🍒</div>
+          <div class="silhouette-group">
+            <div class="silhouette">
+              <svg viewBox="0 0 72 120" fill="none">
+                <circle cx="36" cy="20" r="16" fill="#6D4C41" opacity="0.7"/>
+                <path d="M12 120 C12 80 20 65 36 60 C52 65 60 80 60 120Z" fill="#6D4C41" opacity="0.7"/>
+                <path d="M8 75 C4 68 6 58 14 56" stroke="#6D4C41" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+                <path d="M64 75 C68 68 66 58 58 56" stroke="#6D4C41" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+              </svg>
+              <div class="pulse-dot"></div>
+            </div>
+            <div class="silhouette" style="width:60px;height:100px;margin-left:-8px">
+              <svg viewBox="0 0 60 100" fill="none">
+                <circle cx="30" cy="17" r="13" fill="#3B2A24" opacity="0.85"/>
+                <path d="M10 100 C10 68 16 55 30 50 C44 55 50 68 50 100Z" fill="#3B2A24" opacity="0.85"/>
+                <path d="M6 62 C2 56 4 48 12 46" stroke="#3B2A24" stroke-width="5" stroke-linecap="round" opacity="0.6"/>
+                <path d="M54 62 C58 56 56 48 48 46" stroke="#3B2A24" stroke-width="5" stroke-linecap="round" opacity="0.6"/>
+              </svg>
+            </div>
+          </div>
+          <div class="metrics-panel">
+            <div class="metric-row">
+              <span class="metric-label">Heart rate</span>
+              <div class="metric-bar"><div class="metric-fill fill-72"></div></div>
+              <span class="metric-value">72 bpm</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Voice clarity</span>
+              <div class="metric-bar"><div class="metric-fill fill-85" style="animation-delay:0.3s"></div></div>
+              <span class="metric-value">Normal</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Stress level</span>
+              <div class="metric-bar"><div class="metric-fill fill-60" style="background:var(--stem);animation-delay:0.6s"></div></div>
+              <span class="metric-value">Low</span>
+            </div>
+          </div>
+        </div>
+        <div class="phone-bottom">
+          <div class="phone-btn mute">🔇</div>
+          <div class="phone-btn call">📵</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="features">
+  <div class="feature-card">
+    <div class="feature-icon">📱</div>
+    <h3>No extra devices</h3>
+    <p>Monitoring happens through the camera during regular video calls. Your elderly relatives don't need to wear anything or change their habits.</p>
+  </div>
+  <div class="feature-card">
+    <div class="feature-icon">🧠</div>
+    <h3>Personal baseline</h3>
+    <p>We compare each person to their own normal — not population averages. This makes early detection far more accurate over time.</p>
+  </div>
+  <div class="feature-card">
+    <div class="feature-icon">🔔</div>
+    <h3>Silent alerts</h3>
+    <p>When something changes — voice patterns, facial dynamics, vital signs — adult children are notified quietly. The elderly person never feels watched.</p>
+  </div>
+</div>
+
+<div class="tagline-section">
+  <h2>The insight happens in the <em>moment of love</em></h2>
+  <p>Families already call their parents and grandparents. CherishKin makes those moments count — without anyone knowing monitoring is happening at all.</p>
+</div>
+
+<div class="how-it-works" id="how-it-works">
+  <div class="section-label">How it works</div>
+  <h2 class="section-title">Three steps to peace of mind</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h4>Family connects</h4>
+      <p>Create a family group in CherishKin. Invite your elderly relative and other family members with a simple link.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h4>Call as usual</h4>
+      <p>During every video call, AI silently analyzes voice patterns, facial dynamics, and physiological signals through the camera.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h4>Stay informed</h4>
+      <p>Over time, CherishKin builds a personal health baseline. You receive an alert only when something meaningfully changes.</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="logo">🍒 Cherish<span style="color:var(--terracotta)">Kin</span></div>
+  <span>Early stage · Seeking partners & investors</span>
+  <a href="mailto:yuleshster@gmail.com" class="contact-link">yuleshster@gmail.com</a>
+</footer>
+
+</body>
+</html>
