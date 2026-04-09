@@ -1,323 +1,1416 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CherishKin — Family Care, Reimagined</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>CherishKin — Семейные видеозвонки с заботой о здоровье</title>
+<meta name="description" content="CherishKin превращает обычные семейные видеозвонки в пассивный мониторинг здоровья пожилых близких по 10 медицинским показателям. Без устройств. Без изменений привычек.">
+<meta property="og:title" content="CherishKin — Семейные видеозвонки с заботой о здоровье">
+<meta property="og:description" content="Видеозвонки для семьи + ненавязчивый мониторинг здоровья по 10 биомаркерам во время каждого звонка.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --cherry: #8B1A1A; --cherry-light: #C0392B; --cream: #FAF7F2;
-  --stem: #3B7A2A; --brown-dark: #1C0A06; --brown-mid: #6D4C41;
-  --brown-light: #E8D5C4; --terracotta: #E8956D;
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Inter',sans-serif;color:#2D3748;background:#F5F7FA;overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+img{max-width:100%;height:auto;display:block}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+ul{list-style:none}
+
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root{
+  --teal:#1B8FA8;
+  --teal-hover:#166f84;
+  --teal-light:#2D9CDB;
+  --teal-subtle:#E8F4FD;
+  --accent:#E8735A;
+  --accent-hover:#d4674f;
+  --accent-light:#FDE8DF;
+  --bg:#F5F7FA;
+  --surface:#FFFFFF;
+  --dark:#1A2332;
+  --text:#2D3748;
+  --muted:#6B7280;
+  --border:#E2E8F0;
+  --success:#27AE60;
+  --success-bg:#F0FFF4;
+  --warning:#F59E0B;
+  --r-sm:8px;--r-md:12px;--r-lg:16px;--r-xl:24px;--r-pill:100px;
+  --sh-sm:0 2px 8px rgba(0,0,0,.06);
+  --sh-md:0 4px 24px rgba(0,0,0,.08);
+  --sh-lg:0 8px 40px rgba(0,0,0,.12);
+  --sh-teal:0 8px 32px rgba(27,143,168,.18);
 }
-html { scroll-behavior: smooth; }
-body { background: var(--cream); color: var(--brown-dark); font-family: 'DM Sans', sans-serif; font-weight: 300; overflow-x: hidden; }
 
-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 20px 48px; display: flex; justify-content: space-between; align-items: center; background: rgba(250,247,242,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(139,26,26,0.08); }
-.logo { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; color: var(--brown-dark); }
-.logo span { color: var(--cherry); }
-nav a { font-size: 13px; color: var(--brown-mid); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
-nav a:hover { color: var(--cherry); }
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
 
-.hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 120px 48px 80px; gap: 80px; max-width: 1200px; margin: 0 auto; }
-.hero-text { animation: fadeUp 1s ease both; }
-.eyebrow { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cherry); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
-.eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--cherry); }
-h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(44px, 6vw, 76px); font-weight: 300; line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 28px; }
-h1 em { font-style: italic; color: var(--cherry); }
-.hero-desc { font-size: 16px; line-height: 1.75; color: var(--brown-mid); max-width: 420px; margin-bottom: 48px; }
-.cta-group { display: flex; gap: 16px; align-items: center; }
-.btn-primary { background: var(--cherry); color: white; border: none; padding: 14px 32px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 0.04em; cursor: pointer; border-radius: 40px; transition: all 0.25s; text-decoration: none; display: inline-block; }
-.btn-primary:hover { background: var(--cherry-light); transform: translateY(-1px); }
-.btn-ghost { font-size: 13px; color: var(--brown-mid); text-decoration: none; transition: color 0.2s; }
-.btn-ghost:hover { color: var(--cherry); }
+.section-label{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--teal);background:var(--teal-subtle);
+  padding:6px 14px;border-radius:var(--r-pill);margin-bottom:14px;
+}
+.section-title{
+  font-family:'Nunito',sans-serif;font-size:clamp(26px,4vw,44px);
+  font-weight:800;line-height:1.2;color:var(--dark);margin-bottom:14px;
+}
+.section-sub{font-size:17px;line-height:1.75;color:var(--muted);max-width:580px}
 
-.hero-visual { display: flex; justify-content: center; align-items: center; animation: fadeUp 1s 0.2s ease both; }
-.phone-frame { width: 270px; height: 540px; background: var(--brown-dark); border-radius: 38px; padding: 14px; box-shadow: 0 40px 80px rgba(28,10,6,0.25); }
-.phone-screen { width: 100%; height: 100%; background: var(--cream); border-radius: 26px; overflow: hidden; display: flex; flex-direction: column; }
-.phone-call-bg { flex: 1; background: linear-gradient(160deg,#f5ede8,#faf7f2,#e8d5c4); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 18px; position: relative; gap: 7px; }
-.cherry-badge { position: absolute; top: 12px; right: 12px; font-size: 16px; }
-.phone-silhouettes { font-size: 32px; margin-bottom: 6px; opacity: 0.55; }
-.metrics-panel { background: rgba(139,26,26,0.08); border-radius: 12px; padding: 10px 12px; width: 100%; display: flex; flex-direction: column; gap: 6px; }
-.metric-row { display: flex; align-items: center; justify-content: space-between; gap: 7px; }
-.metric-label { font-size: 9px; color: var(--brown-mid); white-space: nowrap; }
-.metric-bar { flex: 1; height: 3px; background: var(--brown-light); border-radius: 2px; overflow: hidden; }
-.metric-fill { height: 100%; border-radius: 2px; background: var(--cherry); animation: fillBar 2s ease-out both; }
-.metric-value { font-size: 9px; font-weight: 500; color: var(--cherry); white-space: nowrap; }
-.phone-bottom { padding: 10px; display: flex; justify-content: center; gap: 12px; }
-.phone-btn { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; }
-.phone-btn.call { background: var(--cherry); }
-.phone-btn.mute { background: var(--brown-light); }
+/* Scroll animations */
+.fade-up{opacity:0;transform:translateY(28px);transition:opacity .55s ease,transform .55s ease}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}.d5{transition-delay:.5s}
 
-.features { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; padding: 80px 48px; max-width: 1200px; margin: 0 auto; }
-.feature-card { background: white; border-radius: 20px; padding: 32px 24px; border: 1px solid rgba(139,26,26,0.08); transition: transform 0.3s, box-shadow 0.3s; }
-.feature-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(28,10,6,0.08); }
-.feature-icon { width: 44px; height: 44px; background: rgba(139,26,26,0.08); border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 18px; }
-.feature-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 21px; font-weight: 600; margin-bottom: 10px; }
-.feature-card p { font-size: 14px; line-height: 1.7; color: var(--brown-mid); }
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-family:'Inter',sans-serif;font-size:15px;font-weight:600;
+  padding:14px 28px;border-radius:var(--r-pill);
+  transition:all .22s ease;white-space:nowrap;
+}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-hover);transform:translateY(-1px);box-shadow:0 6px 20px rgba(232,115,90,.35)}
+.btn-secondary{background:transparent;color:var(--teal);border:2px solid var(--teal)}
+.btn-secondary:hover{background:var(--teal-subtle);transform:translateY(-1px)}
+.btn-ghost{color:var(--teal);padding:12px 0;font-weight:600}
+.btn-ghost:hover{color:var(--teal-light)}
+.btn-white{background:#fff;color:var(--teal);border:2px solid #fff}
+.btn-white:hover{background:var(--teal-subtle);transform:translateY(-1px)}
+.btn-store{
+  background:var(--dark);color:#fff;padding:12px 22px;gap:10px;
+  border-radius:var(--r-lg);
+}
+.btn-store:hover{background:#2d3a4a;transform:translateY(-1px);box-shadow:var(--sh-lg)}
 
-.section-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cherry); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
-.section-label::before { content: ''; display: block; width: 32px; height: 1px; background: var(--cherry); }
-.section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(32px, 4vw, 52px); font-weight: 300; margin-bottom: 16px; }
-.section-title em { font-style: italic; color: var(--cherry); }
-.section-sub { font-size: 16px; color: var(--brown-mid); line-height: 1.7; max-width: 600px; margin-bottom: 56px; }
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  height:72px;
+  background:rgba(255,255,255,.96);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid transparent;
+  transition:border-color .3s,box-shadow .3s;
+}
+nav.scrolled{border-color:var(--border);box-shadow:var(--sh-sm)}
+.nav-inner{
+  max-width:1200px;margin:0 auto;padding:0 24px;
+  height:100%;display:flex;align-items:center;justify-content:space-between;gap:24px;
+}
+.logo{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.logo-cherry{flex-shrink:0;display:block}
+.logo-text{font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:700;color:#3D1616;letter-spacing:-.01em}
+.logo-kin{color:#C0392B}
 
-/* BINAH */
-.binah-section { padding: 0 48px 60px; max-width: 1200px; margin: 0 auto; }
-.binah-badge { background: white; border-radius: 20px; padding: 36px 40px; border: 1px solid rgba(139,26,26,0.08); display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 40px; }
-.binah-badge h3 { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; margin-bottom: 10px; }
-.binah-badge p { font-size: 14px; color: var(--brown-mid); line-height: 1.7; max-width: 540px; }
-.indicators-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-.indicator-chip { font-size: 11px; background: rgba(139,26,26,0.07); color: var(--cherry); padding: 5px 12px; border-radius: 20px; }
-.binah-stat { text-align: center; flex-shrink: 0; }
-.binah-stat .big-num { font-family: 'Cormorant Garamond', serif; font-size: 56px; font-weight: 600; color: var(--cherry); line-height: 1; }
-.binah-stat .big-label { font-size: 11px; color: var(--brown-mid); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 4px; }
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{font-size:14px;font-weight:500;color:var(--muted);transition:color .2s}
+.nav-links a:hover{color:var(--teal)}
 
-/* HEALTH CONDITIONS */
-.health-section { padding: 80px 48px; max-width: 1200px; margin: 0 auto; }
-.conditions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; }
-.condition-card { background: white; border-radius: 18px; padding: 28px 24px; border: 1px solid rgba(139,26,26,0.08); transition: transform 0.3s, box-shadow 0.3s; position: relative; overflow: hidden; }
-.condition-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--cherry); }
-.condition-card:hover { transform: translateY(-3px); box-shadow: 0 16px 36px rgba(28,10,6,0.08); }
-.condition-icon { font-size: 28px; margin-bottom: 14px; display: block; }
-.condition-card h4 { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: var(--brown-dark); margin-bottom: 8px; }
-.condition-card p { font-size: 13px; line-height: 1.65; color: var(--brown-mid); }
-.condition-markers { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
-.marker-tag { font-size: 10px; background: rgba(139,26,26,0.07); color: var(--cherry); padding: 3px 9px; border-radius: 20px; }
+.nav-actions{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.btn-nav-login{
+  font-size:14px;font-weight:600;color:var(--teal);
+  padding:8px 16px;border:1.5px solid var(--teal);border-radius:var(--r-pill);
+  transition:all .2s;
+}
+.btn-nav-login:hover{background:var(--teal-subtle)}
+.btn-nav-cta{
+  font-size:14px;font-weight:600;color:#fff;background:var(--accent);
+  padding:10px 20px;border-radius:var(--r-pill);transition:all .22s;
+}
+.btn-nav-cta:hover{background:var(--accent-hover);transform:translateY(-1px);box-shadow:0 4px 14px rgba(232,115,90,.35)}
 
-.health-disclaimer { background: var(--brown-dark); border-radius: 20px; padding: 36px 40px; display: flex; align-items: center; gap: 32px; }
-.disclaimer-icon { font-size: 36px; flex-shrink: 0; }
-.disclaimer-text h4 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; color: var(--cream); margin-bottom: 8px; }
-.disclaimer-text p { font-size: 14px; color: rgba(250,247,242,0.65); line-height: 1.7; }
-.disclaimer-text em { color: var(--terracotta); font-style: normal; }
+/* Hamburger */
+.hamburger{display:none;flex-direction:column;gap:5px;padding:8px;cursor:pointer;border-radius:8px}
+.hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:all .3s}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 
-.tagline-section { text-align: center; padding: 100px 48px; background: var(--brown-dark); color: var(--cream); }
-.tagline-section h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px,5vw,64px); font-weight: 300; line-height: 1.15; max-width: 700px; margin: 0 auto 32px; }
-.tagline-section h2 em { font-style: italic; color: var(--terracotta); }
-.tagline-section p { font-size: 15px; color: rgba(250,247,242,0.6); max-width: 480px; margin: 0 auto; line-height: 1.7; }
+/* Mobile menu */
+.mobile-menu{
+  display:none;position:fixed;top:72px;left:0;right:0;
+  background:#fff;border-bottom:1px solid var(--border);
+  padding:16px 24px 28px;z-index:999;box-shadow:var(--sh-lg);
+}
+.mobile-menu.open{display:block}
+.mobile-menu li{border-bottom:1px solid var(--border)}
+.mobile-menu li a{display:block;padding:14px 0;font-weight:500;color:var(--text)}
+.mobile-menu-actions{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.mobile-menu-actions .btn{width:100%;justify-content:center}
 
-.how-it-works { padding: 100px 48px; max-width: 1200px; margin: 0 auto; }
-.steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 48px; position: relative; }
-.steps::before { content: ''; position: absolute; top: 24px; left: calc(16.66% + 24px); right: calc(16.66% + 24px); height: 1px; background: var(--brown-light); }
-.step { position: relative; }
-.step-num { width: 48px; height: 48px; border-radius: 50%; background: var(--cream); border: 2px solid var(--cherry); display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 600; color: var(--cherry); margin-bottom: 24px; position: relative; z-index: 1; }
-.step h4 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; margin-bottom: 12px; }
-.step p { font-size: 14px; line-height: 1.7; color: var(--brown-mid); }
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  min-height:100vh;
+  background:linear-gradient(135deg,#F5F7FA 0%,#EBF5FB 55%,#F0F9FF 100%);
+  display:flex;align-items:center;
+  padding:100px 0 72px;position:relative;overflow:hidden;
+}
+.hero-blob-1{
+  position:absolute;width:700px;height:700px;border-radius:50%;
+  background:radial-gradient(circle,rgba(27,143,168,.07) 0%,transparent 70%);
+  top:-150px;right:-150px;pointer-events:none;
+}
+.hero-blob-2{
+  position:absolute;width:450px;height:450px;border-radius:50%;
+  background:radial-gradient(circle,rgba(232,115,90,.06) 0%,transparent 70%);
+  bottom:-60px;left:3%;pointer-events:none;
+}
+.hero-inner{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:64px;align-items:center;
+  max-width:1200px;margin:0 auto;padding:0 24px;
+}
 
-footer { background: var(--brown-dark); color: rgba(250,247,242,0.5); padding: 48px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
-footer .logo { color: var(--cream); }
-.contact-link { color: rgba(250,247,242,0.5); text-decoration: none; transition: color 0.2s; }
-.contact-link:hover { color: var(--terracotta); }
+/* Hero text */
+.hero-badge{
+  display:inline-flex;align-items:center;gap:10px;
+  background:#fff;border:1px solid var(--border);border-radius:var(--r-pill);
+  padding:7px 16px 7px 10px;font-size:13px;font-weight:500;color:var(--muted);
+  margin-bottom:24px;box-shadow:var(--sh-sm);
+}
+.badge-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--success);
+  animation:pulseDot 2s infinite;
+}
+@keyframes pulseDot{
+  0%,100%{box-shadow:0 0 0 0 rgba(39,174,96,.4)}
+  50%{box-shadow:0 0 0 6px rgba(39,174,96,0)}
+}
+.hero-title{
+  font-family:'Nunito',sans-serif;
+  font-size:clamp(38px,5.5vw,66px);font-weight:900;line-height:1.08;
+  color:var(--dark);margin-bottom:20px;
+}
+.hero-title .teal{color:var(--teal)}
+.hero-desc{font-size:18px;line-height:1.75;color:var(--muted);max-width:460px;margin-bottom:36px}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:32px}
+.hero-social{display:flex;align-items:center;gap:14px;font-size:13px;color:var(--muted)}
+.hero-avatars{display:flex}
+.hero-avatars img{
+  width:30px;height:30px;border-radius:50%;border:2px solid #fff;
+  margin-left:-7px;object-fit:cover;
+}
+.hero-avatars img:first-child{margin-left:0}
+.stars{color:#F59E0B;letter-spacing:1px;font-size:12px}
 
-@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes fillBar { from { width: 0; } }
-.fill-72 { width: 72%; } .fill-85 { width: 85%; } .fill-60 { width: 60%; }
+/* Phone mockup */
+.hero-visual{display:flex;justify-content:center;align-items:center;position:relative}
+.phone-wrapper{position:relative;display:inline-block}
+.phone-frame{
+  width:272px;height:554px;background:#0f1923;border-radius:46px;
+  padding:13px;
+  box-shadow:0 40px 80px rgba(15,25,35,.38),0 0 0 1px rgba(255,255,255,.07) inset;
+  position:relative;
+}
+.phone-notch{
+  position:absolute;top:14px;left:50%;transform:translateX(-50%);
+  width:88px;height:26px;background:#0f1923;border-radius:0 0 16px 16px;
+  z-index:2;
+}
+.phone-screen{
+  width:100%;height:100%;
+  background:linear-gradient(160deg,#f5f0ec,#faf7f2 50%,#edf4f8);
+  border-radius:34px;overflow:hidden;display:flex;flex-direction:column;
+}
+.phone-call-area{
+  flex:1;padding:48px 14px 14px;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  position:relative;
+}
+.phone-status{font-size:9px;font-weight:600;color:var(--teal);letter-spacing:.1em;text-transform:uppercase;opacity:.8}
+.phone-avatar{
+  width:60px;height:60px;border-radius:50%;
+  background:linear-gradient(135deg,#d4e9f0,#b8d4e8);
+  display:flex;align-items:center;justify-content:center;font-size:30px;
+}
+.phone-name{font-family:'Nunito',sans-serif;font-size:11px;font-weight:700;color:#2d3748;letter-spacing:.02em}
+.phone-timer{font-size:9px;color:var(--muted)}
 
-@media (max-width: 768px) {
-  .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; gap: 48px; }
-  .hero-visual, .hero-visual { display: none; }
-  .features, .conditions-grid { grid-template-columns: 1fr; }
-  .features { padding: 48px 24px; }
-  .steps { grid-template-columns: 1fr; gap: 32px; }
-  .steps::before { display: none; }
-  nav { padding: 16px 24px; }
-  .health-section, .how-it-works, .binah-section { padding: 60px 24px; }
-  .binah-badge { grid-template-columns: 1fr; }
-  .health-disclaimer { flex-direction: column; text-align: center; }
-  footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px 24px; }
+.phone-metrics-panel{
+  width:100%;background:rgba(27,143,168,.08);border-radius:11px;
+  padding:10px 12px;display:flex;flex-direction:column;gap:7px;margin-top:6px;
+}
+.pm-row{display:flex;align-items:center;gap:8px}
+.pm-label{font-size:9px;color:var(--muted);width:68px;flex-shrink:0;font-weight:500}
+.pm-bar{flex:1;height:3px;background:#e2e8f0;border-radius:2px;overflow:hidden}
+.pm-fill{
+  height:100%;border-radius:2px;width:0;
+  animation:barGrow 1.6s ease-out forwards;
+  animation-delay:var(--d,0s);
+}
+@keyframes barGrow{to{width:var(--w,80%)}}
+.pm-fill.c-green{background:var(--success)}
+.pm-fill.c-teal{background:var(--teal)}
+.pm-fill.c-amber{background:var(--warning)}
+.pm-val{font-size:9px;font-weight:700;width:42px;flex-shrink:0;text-align:right}
+.pm-val.ok{color:var(--success)}.pm-val.watch{color:var(--warning)}.pm-val.info{color:var(--teal)}
+
+.phone-controls{
+  padding:10px 14px;border-top:1px solid rgba(0,0,0,.06);
+  display:flex;justify-content:center;gap:14px;
+}
+.p-ctrl{
+  width:38px;height:38px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:15px;
+}
+.p-ctrl-end{background:#ef4444}
+.p-ctrl-mute{background:#e2e8f0}
+.p-ctrl-cam{background:#e2e8f0}
+
+/* Floating metric cards */
+.mc{
+  position:absolute;background:#fff;border-radius:14px;
+  padding:10px 14px;box-shadow:0 8px 32px rgba(0,0,0,.13);
+  display:flex;align-items:center;gap:10px;
+  opacity:0;animation:floatCard .55s ease forwards;
+  min-width:140px;
+}
+.mc-icon{
+  width:34px;height:34px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;
+}
+.mc-icon.g{background:#f0fff4}.mc-icon.a{background:#fffbeb}.mc-icon.t{background:var(--teal-subtle)}
+.mc-label{font-size:10px;color:var(--muted);font-weight:500;line-height:1.3}
+.mc-value{font-size:13px;font-weight:700;color:var(--dark);line-height:1.3}
+.mc-status{font-size:10px;font-weight:700}
+.mc-status.ok{color:var(--success)}.mc-status.watch{color:var(--warning)}
+
+.mc-1{top:70px;left:-148px;animation-delay:.9s}
+.mc-2{top:70px;right:-148px;animation-delay:1.2s}
+.mc-3{bottom:130px;left:-148px;animation-delay:1.5s}
+.mc-4{bottom:130px;right:-148px;animation-delay:1.8s}
+
+@keyframes floatCard{
+  from{opacity:0;transform:translateY(10px) scale(.92)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+/* Scroll indicator */
+.scroll-hint{
+  position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  font-size:11px;color:var(--muted);animation:scrollBounce 2.2s infinite;
+}
+@keyframes scrollBounce{
+  0%,100%{transform:translateX(-50%) translateY(0)}
+  50%{transform:translateX(-50%) translateY(7px)}
+}
+.scroll-arrow{width:20px;height:20px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);margin-top:-4px}
+
+/* ============================================================
+   PROBLEM SECTION
+   ============================================================ */
+.problem-section{background:var(--surface);padding:96px 0}
+.problem-header{text-align:center;margin-bottom:52px}
+.problem-header .section-title{margin:0 auto 12px;max-width:620px}
+.problem-header .section-sub{margin:0 auto;text-align:center}
+
+.problem-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:40px}
+.problem-card{
+  background:var(--bg);border-radius:var(--r-lg);padding:32px 26px;
+  transition:transform .3s,box-shadow .3s;
+}
+.problem-card:hover{transform:translateY(-4px);box-shadow:var(--sh-md)}
+.problem-card-icon{
+  width:52px;height:52px;background:var(--teal-subtle);border-radius:14px;
+  display:flex;align-items:center;justify-content:center;font-size:24px;
+  margin-bottom:18px;
+}
+.problem-card h3{font-family:'Nunito',sans-serif;font-size:18px;font-weight:700;color:var(--dark);margin-bottom:10px}
+.problem-card p{font-size:15px;line-height:1.65;color:var(--muted)}
+
+.problem-bridge{
+  text-align:center;
+  font-family:'Nunito',sans-serif;font-size:19px;font-weight:700;color:var(--teal);
+  background:var(--teal-subtle);border-radius:var(--r-lg);
+  padding:20px 32px;max-width:660px;margin:0 auto;
+}
+
+/* ============================================================
+   HOW IT WORKS
+   ============================================================ */
+.hiw-section{background:linear-gradient(180deg,#F0F9FF 0%,#F5F7FA 100%);padding:96px 0}
+.hiw-header{text-align:center;margin-bottom:64px}
+.hiw-header .section-sub{margin:0 auto;text-align:center}
+
+.hiw-steps{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:0;
+  position:relative;
+}
+.hiw-connector{
+  position:absolute;top:36px;
+  left:calc(16.66% + 16px);right:calc(16.66% + 16px);
+  height:2px;
+  background:repeating-linear-gradient(90deg,var(--teal) 0,var(--teal) 8px,transparent 8px,transparent 18px);
+  opacity:.35;
+}
+.hiw-step{padding:0 32px;text-align:center;position:relative}
+.step-num{
+  width:72px;height:72px;
+  background:var(--surface);border:2px solid var(--teal);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Nunito',sans-serif;font-size:28px;font-weight:900;color:var(--teal);
+  margin:0 auto 24px;position:relative;z-index:1;
+  box-shadow:0 0 0 8px rgba(27,143,168,.07);
+}
+.step-emoji{font-size:40px;margin-bottom:20px}
+.hiw-step h3{font-family:'Nunito',sans-serif;font-size:20px;font-weight:700;color:var(--dark);margin-bottom:12px}
+.hiw-step p{font-size:15px;line-height:1.7;color:var(--muted)}
+.hiw-cta{text-align:center;margin-top:52px}
+
+/* ============================================================
+   HEALTH MONITORING
+   ============================================================ */
+.health-section{background:var(--surface);padding:96px 0}
+.health-header{margin-bottom:48px}
+
+.binah-badge{
+  display:flex;align-items:center;gap:24px;
+  background:linear-gradient(135deg,var(--teal-subtle),#f0f9ff);
+  border:1px solid rgba(27,143,168,.2);border-radius:var(--r-lg);
+  padding:24px 32px;margin-bottom:56px;
+  box-shadow:var(--sh-sm);
+}
+.binah-logo{
+  width:76px;height:76px;
+  background:linear-gradient(135deg,var(--teal),var(--teal-light));
+  border-radius:20px;display:flex;align-items:center;justify-content:center;
+  font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;
+  color:#fff;text-align:center;line-height:1.2;flex-shrink:0;letter-spacing:-.02em;
+}
+.binah-text{flex:1}
+.binah-text h3{font-family:'Nunito',sans-serif;font-size:19px;font-weight:700;color:var(--dark);margin-bottom:6px}
+.binah-text p{font-size:14px;line-height:1.65;color:var(--muted)}
+.binah-stat{
+  flex-shrink:0;text-align:center;background:#fff;border-radius:var(--r-md);
+  padding:16px 24px;box-shadow:var(--sh-sm);min-width:100px;
+}
+.binah-num{font-family:'Nunito',sans-serif;font-size:52px;font-weight:900;color:var(--teal);line-height:1}
+.binah-label{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.4}
+
+/* 10 metrics grid */
+.metrics-section-title{font-family:'Nunito',sans-serif;font-size:22px;font-weight:700;color:var(--dark);margin-bottom:24px}
+.metrics-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:64px}
+.metric-tile{
+  background:var(--bg);border-radius:var(--r-md);padding:18px 14px;
+  text-align:center;border:1.5px solid var(--border);transition:all .28s;cursor:default;
+}
+.metric-tile:hover{
+  background:#fff;border-color:var(--teal);
+  box-shadow:var(--sh-teal);transform:translateY(-3px);
+}
+.mt-icon{
+  width:46px;height:46px;background:var(--teal-subtle);border-radius:12px;
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+  margin:0 auto 12px;transition:background .28s;
+}
+.metric-tile:hover .mt-icon{background:rgba(27,143,168,.15)}
+.mt-name{font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;color:var(--dark);margin-bottom:4px;line-height:1.3}
+.mt-sub{font-size:11px;color:var(--muted);line-height:1.4}
+
+/* Condition cards */
+.conditions-header{font-family:'Nunito',sans-serif;font-size:22px;font-weight:700;color:var(--dark);margin-bottom:24px}
+.conditions-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:36px}
+.cond-card{
+  background:var(--bg);border-radius:var(--r-lg);
+  padding:26px 22px 22px;border-left:4px solid var(--teal);
+  transition:all .28s;
+}
+.cond-card:hover{transform:translateY(-3px);box-shadow:var(--sh-md);background:#fff}
+.cond-icon{font-size:30px;margin-bottom:14px}
+.cond-card h4{font-family:'Nunito',sans-serif;font-size:17px;font-weight:700;color:var(--dark);margin-bottom:8px}
+.cond-card p{font-size:13px;line-height:1.65;color:var(--muted)}
+.cond-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.cond-tag{
+  font-size:11px;background:var(--teal-subtle);color:var(--teal);
+  padding:3px 10px;border-radius:var(--r-pill);font-weight:600;
+}
+
+/* Disclaimer */
+.disclaimer{
+  background:var(--dark);border-radius:var(--r-lg);
+  padding:32px 36px;display:flex;align-items:center;gap:24px;margin-bottom:24px;
+}
+.disclaimer-icon{font-size:38px;flex-shrink:0}
+.disclaimer h4{font-family:'Nunito',sans-serif;font-size:19px;font-weight:700;color:#fff;margin-bottom:8px}
+.disclaimer p{font-size:14px;color:rgba(255,255,255,.6);line-height:1.7}
+.disclaimer em{color:var(--accent);font-style:normal;font-weight:600}
+
+/* Privacy block */
+.privacy-block{
+  background:var(--success-bg);border-left:4px solid var(--success);
+  border-radius:var(--r-md);padding:18px 22px;
+  display:flex;align-items:flex-start;gap:14px;
+}
+.privacy-icon{font-size:22px;flex-shrink:0;margin-top:1px}
+.privacy-block h5{font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:var(--dark);margin-bottom:4px}
+.privacy-block p{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* ============================================================
+   SOCIAL PROOF
+   ============================================================ */
+.social-section{background:var(--bg);padding:96px 0}
+.stats-row{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:32px;
+  text-align:center;margin-bottom:72px;
+}
+.stat-divider{width:1px;background:var(--border);align-self:stretch}
+.stat-num{font-family:'Nunito',sans-serif;font-size:56px;font-weight:900;color:var(--teal);line-height:1;margin-bottom:8px}
+.stat-label{font-size:15px;color:var(--muted);line-height:1.5}
+
+.testimonials-header{
+  font-family:'Nunito',sans-serif;font-size:24px;font-weight:700;
+  color:var(--dark);text-align:center;margin-bottom:32px;
+}
+.testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-bottom:56px}
+.tcard{
+  background:var(--surface);border-radius:var(--r-lg);padding:28px 24px;
+  box-shadow:var(--sh-sm);border:1px solid var(--border);transition:all .28s;
+}
+.tcard:hover{transform:translateY(-3px);box-shadow:var(--sh-md)}
+.tcard-stars{color:#F59E0B;font-size:15px;margin-bottom:14px;letter-spacing:2px}
+.tcard-text{font-size:15px;line-height:1.75;color:var(--text);margin-bottom:20px;font-style:italic}
+.tcard-author{display:flex;align-items:center;gap:12px}
+.tcard-avatar{
+  width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;
+  background:var(--teal-subtle);display:flex;align-items:center;justify-content:center;font-size:20px;
+}
+.tcard-name{font-weight:600;font-size:14px;color:var(--dark)}
+.tcard-city{font-size:12px;color:var(--muted)}
+
+.media-row{text-align:center}
+.media-tag{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px}
+.media-logos{display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap}
+.media-logo{
+  font-family:'Nunito',sans-serif;font-size:17px;font-weight:800;
+  color:#CBD5E0;letter-spacing:-.02em;transition:color .2s;
+}
+.media-logo:hover{color:var(--muted)}
+
+/* ============================================================
+   PRICING
+   ============================================================ */
+.pricing-section{background:var(--surface);padding:96px 0}
+.pricing-header{text-align:center;margin-bottom:44px}
+.pricing-header .section-sub{margin:0 auto;text-align:center}
+
+.pricing-toggle{
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  margin-bottom:48px;font-size:14px;font-weight:500;color:var(--muted);
+}
+.toggle-wrap{
+  position:relative;width:48px;height:26px;background:var(--teal);
+  border-radius:13px;cursor:pointer;transition:background .3s;
+}
+.toggle-wrap::after{
+  content:'';position:absolute;width:20px;height:20px;background:#fff;
+  border-radius:50%;top:3px;left:3px;transition:transform .3s;
+}
+.toggle-wrap.annual::after{transform:translateX(22px)}
+.toggle-tag{
+  background:var(--accent);color:#fff;font-size:11px;
+  font-weight:700;padding:3px 8px;border-radius:var(--r-pill);
+}
+
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch}
+.pcard{
+  background:var(--bg);border-radius:var(--r-xl);padding:36px 28px;
+  border:2px solid transparent;transition:all .3s;position:relative;
+}
+.pcard:hover{transform:translateY(-4px);box-shadow:var(--sh-lg)}
+.pcard.featured{background:var(--teal);border-color:var(--teal)}
+.pcard-badge{
+  position:absolute;top:-13px;left:50%;transform:translateX(-50%);
+  background:var(--accent);color:#fff;font-size:12px;font-weight:700;
+  padding:4px 16px;border-radius:var(--r-pill);white-space:nowrap;
+}
+.pcard-tier{
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:12px;
+}
+.pcard.featured .pcard-tier{color:rgba(255,255,255,.65)}
+.pcard-price{
+  font-family:'Nunito',sans-serif;font-size:46px;font-weight:900;
+  color:var(--dark);line-height:1;margin-bottom:4px;
+}
+.pcard.featured .pcard-price{color:#fff}
+.pcard-price sup{font-size:22px;vertical-align:top;margin-top:10px;margin-right:2px}
+.pcard-period{font-size:14px;color:var(--muted);margin-bottom:28px}
+.pcard.featured .pcard-period{color:rgba(255,255,255,.65)}
+.pcard-features{display:flex;flex-direction:column;gap:12px;margin-bottom:32px}
+.pcard-features li{display:flex;align-items:flex-start;gap:10px;font-size:14px;line-height:1.5;color:var(--text)}
+.pcard.featured .pcard-features li{color:rgba(255,255,255,.9)}
+.pcheck{
+  width:18px;height:18px;border-radius:50%;background:var(--success);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;
+}
+.pcard.featured .pcheck{background:rgba(255,255,255,.28)}
+.pcheck-icon{width:10px;height:10px;fill:#fff}
+.pcard-cta{display:block;text-align:center;width:100%}
+.pcard.featured .btn-secondary{background:#fff;color:var(--teal);border-color:#fff}
+.pricing-note{text-align:center;margin-top:22px;font-size:13px;color:var(--muted)}
+
+/* ============================================================
+   FAQ
+   ============================================================ */
+.faq-section{background:var(--bg);padding:96px 0}
+.faq-header{text-align:center;margin-bottom:48px}
+.faq-list{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+.faq-item{
+  background:var(--surface);border-radius:var(--r-md);
+  border:1px solid var(--border);overflow:hidden;
+}
+.faq-q{
+  width:100%;display:flex;align-items:center;justify-content:space-between;
+  padding:20px 22px;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;
+  color:var(--dark);text-align:left;cursor:pointer;transition:background .2s;gap:16px;
+}
+.faq-q:hover{background:var(--bg)}
+.faq-toggle{
+  width:28px;height:28px;border-radius:50%;background:var(--teal-subtle);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  color:var(--teal);font-size:20px;font-weight:300;line-height:1;
+  transition:transform .3s,background .3s;
+}
+.faq-item.open .faq-toggle{transform:rotate(45deg);background:var(--teal);color:#fff}
+.faq-a{
+  max-height:0;overflow:hidden;padding:0 22px;
+  transition:max-height .35s ease,padding .35s ease;
+}
+.faq-item.open .faq-a{max-height:220px;padding:0 22px 20px}
+.faq-a p{font-size:15px;line-height:1.75;color:var(--muted)}
+
+/* ============================================================
+   FINAL CTA
+   ============================================================ */
+.cta-section{
+  background:linear-gradient(135deg,#1B8FA8 0%,#1a7a95 55%,#155f77 100%);
+  padding:100px 0;text-align:center;position:relative;overflow:hidden;
+}
+.cta-blob-1{
+  position:absolute;width:500px;height:500px;border-radius:50%;
+  background:rgba(255,255,255,.05);top:-200px;right:-80px;pointer-events:none;
+}
+.cta-blob-2{
+  position:absolute;width:300px;height:300px;border-radius:50%;
+  background:rgba(255,255,255,.04);bottom:-100px;left:-50px;pointer-events:none;
+}
+.cta-inner{position:relative;z-index:1}
+.cta-section h2{
+  font-family:'Nunito',sans-serif;font-size:clamp(26px,4vw,50px);
+  font-weight:900;color:#fff;margin-bottom:16px;
+  max-width:640px;margin-left:auto;margin-right:auto;line-height:1.15;
+}
+.cta-section > .cta-inner > p{
+  font-size:17px;color:rgba(255,255,255,.8);margin-bottom:40px;
+  max-width:480px;margin-left:auto;margin-right:auto;line-height:1.7;
+}
+.cta-buttons{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:22px}
+.cta-contact{font-size:14px;color:rgba(255,255,255,.55)}
+.cta-contact a{color:rgba(255,255,255,.85);text-decoration:underline}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer{background:var(--dark);padding:60px 0 28px}
+.footer-grid{
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px;
+}
+.footer-tagline{font-size:14px;color:rgba(255,255,255,.4);line-height:1.65;margin:14px 0 20px;max-width:240px}
+.footer-social{display:flex;gap:8px}
+.soc-btn{
+  width:34px;height:34px;border-radius:9px;
+  background:rgba(255,255,255,.08);display:flex;align-items:center;
+  justify-content:center;font-size:14px;color:rgba(255,255,255,.5);transition:all .2s;
+}
+.soc-btn:hover{background:var(--teal);color:#fff}
+
+.footer-col h5{
+  font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:#fff;margin-bottom:16px;
+}
+.footer-col ul{display:flex;flex-direction:column;gap:10px}
+.footer-col ul a{font-size:13px;color:rgba(255,255,255,.4);transition:color .2s}
+.footer-col ul a:hover{color:rgba(255,255,255,.9)}
+
+.footer-bottom{
+  border-top:1px solid rgba(255,255,255,.08);padding-top:24px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+}
+.footer-copy{font-size:13px;color:rgba(255,255,255,.28)}
+.footer-badges{display:flex;gap:8px}
+.fbadge{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;
+  color:rgba(255,255,255,.35);letter-spacing:.05em;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:1100px){
+  .mc-1,.mc-2,.mc-3,.mc-4{display:none}
+  .metrics-grid{grid-template-columns:repeat(4,1fr) !important}
+}
+
+@media(max-width:900px){
+  .binah-badge{flex-direction:column;text-align:center}
+  .binah-stat{width:100%;max-width:200px}
+}
+
+@media(max-width:768px){
+  .nav-links,.nav-actions{display:none}
+  .hamburger{display:flex}
+
+  .hero-inner{grid-template-columns:1fr;gap:0;padding-bottom:0}
+  .hero-visual{display:none}
+  .hero{padding:88px 0 60px}
+  .hero-title{font-size:38px}
+  .hero-desc{font-size:16px;max-width:100%}
+  .hero-cta{flex-direction:column}
+  .hero-cta .btn{width:100%;justify-content:center}
+
+  .problem-cards{grid-template-columns:1fr}
+  .problem-bridge{font-size:16px;padding:16px 20px}
+
+  .hiw-steps{grid-template-columns:1fr;gap:36px}
+  .hiw-connector{display:none}
+  .hiw-step{text-align:left;display:flex;align-items:flex-start;gap:16px;padding:0}
+  .step-num{width:52px;height:52px;font-size:22px;margin:0;flex-shrink:0}
+  .step-emoji{margin-bottom:12px}
+  .step-text{flex:1}
+
+  .metrics-grid{grid-template-columns:repeat(2,1fr) !important}
+  .conditions-grid{grid-template-columns:1fr}
+  .disclaimer{flex-direction:column;text-align:center;padding:24px 20px}
+
+  .stats-row{grid-template-columns:1fr;gap:32px}
+  .stat-num{font-size:48px}
+  .testimonials-grid{grid-template-columns:1fr}
+  .media-logos{gap:24px}
+
+  .pricing-grid{grid-template-columns:1fr;max-width:440px;margin:0 auto}
+  .pcard.featured{order:-1}
+
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .footer-brand{grid-column:1/-1}
+  .footer-bottom{flex-direction:column;align-items:flex-start}
+}
+
+@media(max-width:480px){
+  .stats-row{grid-template-columns:1fr}
+  .cta-buttons{flex-direction:column;align-items:center}
+  .cta-buttons .btn{width:100%;max-width:320px;justify-content:center}
+  .footer-grid{grid-template-columns:1fr}
+  .metrics-grid{grid-template-columns:repeat(2,1fr) !important}
 }
 </style>
 </head>
 <body>
 
-<nav>
-  <div class="logo">🍒 Cherish<span>Kin</span></div>
-  <a href="mailto:yuleshster@gmail.com">Contact</a>
+<!-- ============================================================
+     NAVIGATION
+     ============================================================ -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <svg class="logo-cherry" width="40" height="38" viewBox="0 0 42 40" fill="none">
+        <path d="M21 3 Q19 10 12 16" stroke="#5A8C3A" stroke-width="1.9" stroke-linecap="round"/>
+        <path d="M21 3 Q23 10 30 16" stroke="#5A8C3A" stroke-width="1.9" stroke-linecap="round"/>
+        <path d="M21 5 C24 1.5 29.5 4 27 9 C24.5 6.5 21 5 21 5Z" fill="#6AAF4E"/>
+        <circle cx="12" cy="25" r="9" fill="#8B1A1A"/>
+        <circle cx="13" cy="24" r="7.5" fill="#C0392B"/>
+        <circle cx="9.5" cy="21" r="2.5" fill="rgba(255,255,255,0.32)"/>
+        <circle cx="30" cy="25" r="9" fill="#8B1A1A"/>
+        <circle cx="31" cy="24" r="7.5" fill="#C0392B"/>
+        <circle cx="27.5" cy="21" r="2.5" fill="rgba(255,255,255,0.26)"/>
+      </svg>
+      <span class="logo-text">Cherish<span class="logo-kin">Kin</span></span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#how-it-works">Как работает</a></li>
+      <li><a href="#health">Мониторинг</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <a href="#" class="btn-nav-login">Войти</a>
+      <a href="#download" class="btn-nav-cta">Начать бесплатно →</a>
+    </div>
+
+    <button class="hamburger" id="hamburger" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
 
-<div class="hero">
-  <div class="hero-text">
-    <div class="eyebrow">Family Health Monitoring · Powered by AI</div>
-    <h1>Care happens<br>in the <em>moment</em><br>of love</h1>
-    <p class="hero-desc">CherishKin turns regular family video calls into passive health monitoring for elderly relatives. No devices. No behavior change. Just a family call — and AI watches over the ones you love.</p>
-    <div class="cta-group">
-      <a href="mailto:yuleshster@gmail.com" class="btn-primary">Request Early Access</a>
-      <a href="#how-it-works" class="btn-ghost">How it works →</a>
-    </div>
+<div class="mobile-menu" id="mobile-menu">
+  <ul>
+    <li><a href="#how-it-works">Как работает</a></li>
+    <li><a href="#health">Мониторинг здоровья</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <div class="mobile-menu-actions">
+    <a href="#" class="btn btn-secondary">Войти</a>
+    <a href="#download" class="btn btn-primary">Начать бесплатно →</a>
   </div>
-  <div class="hero-visual">
-    <div class="phone-frame">
-      <div class="phone-screen">
-        <div class="phone-call-bg">
-          <div class="cherry-badge">🍒</div>
-          <div class="phone-silhouettes">👴👩</div>
-          <div class="metrics-panel">
-            <div class="metric-row"><span class="metric-label">Heart rate</span><div class="metric-bar"><div class="metric-fill fill-72"></div></div><span class="metric-value">72 bpm ✓</span></div>
-            <div class="metric-row"><span class="metric-label">Blood pressure</span><div class="metric-bar"><div class="metric-fill fill-85" style="animation-delay:0.3s"></div></div><span class="metric-value">Normal ✓</span></div>
-            <div class="metric-row"><span class="metric-label">Oxygen SpO₂</span><div class="metric-bar"><div class="metric-fill fill-85" style="background:var(--stem);animation-delay:0.5s"></div></div><span class="metric-value">98% ✓</span></div>
-            <div class="metric-row"><span class="metric-label">Stress index</span><div class="metric-bar"><div class="metric-fill fill-60" style="animation-delay:0.7s"></div></div><span class="metric-value">Low ✓</span></div>
-            <div class="metric-row"><span class="metric-label">Glucose risk</span><div class="metric-bar"><div class="metric-fill fill-72" style="background:var(--terracotta);animation-delay:0.9s"></div></div><span class="metric-value">Watch ⚠</span></div>
+</div>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero" id="home">
+  <div class="hero-blob-1"></div>
+  <div class="hero-blob-2"></div>
+
+  <div class="hero-inner">
+    <!-- Text -->
+    <div class="hero-text">
+      <div class="hero-badge fade-up">
+        <span class="badge-dot"></span>
+        Видеозвонки + Забота о здоровье
+      </div>
+      <h1 class="hero-title fade-up d1">
+        Будьте рядом<br>с теми, кого<br><span class="teal">любите.</span>
+      </h1>
+      <p class="hero-desc fade-up d2">
+        CherishKin превращает обычные семейные видеозвонки в пассивный мониторинг здоровья по 10 медицинским показателям. Без устройств. Без изменений привычек. Просто звоните.
+      </p>
+      <div class="hero-cta fade-up d3">
+        <a href="#download" class="btn btn-store">
+          <svg width="18" height="22" viewBox="0 0 18 22" fill="none">
+            <path d="M14.5 11.5c-.01-2.42 1.98-3.58 2.07-3.64-1.13-1.65-2.88-1.88-3.5-1.9-1.48-.15-2.9.87-3.65.87-.75 0-1.9-.85-3.12-.83C4.57 6.02 2.9 7 2 8.58c-1.83 3.17-.47 7.86 1.3 10.44.87 1.26 1.9 2.67 3.25 2.62 1.31-.05 1.8-.84 3.38-.84 1.57 0 2.02.84 3.4.81 1.41-.02 2.3-1.27 3.15-2.54.99-1.45 1.4-2.87 1.42-2.94-.03-.01-2.72-1.04-2.74-4.13zM12.02 3.28C12.72 2.42 13.2 1.23 13.07 0c-1.04.04-2.3.69-3.04 1.54-.67.77-1.25 1.99-1.09 3.16 1.16.09 2.34-.59 3.08-1.42z" fill="white"/>
+          </svg>
+          App Store
+        </a>
+        <a href="#download" class="btn btn-store">
+          <svg width="18" height="20" viewBox="0 0 18 20" fill="none">
+            <path d="M.5 1.27L9.56 10 .5 18.73A1 1 0 010 18V2a1 1 0 01.5-.73zM13.19 6.72l2.06-1.19 1.38.8c.54.31.87.89.87 1.5v.34c0 .6-.33 1.18-.87 1.49l-1.38.8-2.06-1.19V6.72zM2 .5l8.37 4.84-2.3 2.3L2 .5zm8.07 12.16L2 19.5l6.07-7.14 2.3 2.3z" fill="white"/>
+          </svg>
+          Google Play
+        </a>
+      </div>
+      <div class="hero-social fade-up d4">
+        <div class="hero-avatars">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop&crop=face" alt="Пользователь" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&crop=face" alt="Пользователь" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&crop=face" alt="Пользователь" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=60&h=60&fit=crop&crop=face" alt="Пользователь" loading="lazy">
+        </div>
+        <div>
+          <div class="stars">★★★★★</div>
+          <div>Более <strong>12 000</strong> семей уже используют</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phone visual -->
+    <div class="hero-visual fade-up d2">
+      <div class="phone-wrapper">
+        <!-- Floating metric cards -->
+        <div class="mc mc-1">
+          <div class="mc-icon g">💓</div>
+          <div>
+            <div class="mc-label">Heart rate</div>
+            <div class="mc-value">72 bpm</div>
+            <div class="mc-status ok">✓ Норма</div>
           </div>
         </div>
-        <div class="phone-bottom">
-          <div class="phone-btn mute">🔇</div>
-          <div class="phone-btn call">📵</div>
+        <div class="mc mc-2">
+          <div class="mc-icon t">🩸</div>
+          <div>
+            <div class="mc-label">Blood pressure</div>
+            <div class="mc-value">120/78</div>
+            <div class="mc-status ok">✓ Норма</div>
+          </div>
+        </div>
+        <div class="mc mc-3">
+          <div class="mc-icon g">🫁</div>
+          <div>
+            <div class="mc-label">SpO₂</div>
+            <div class="mc-value">98%</div>
+            <div class="mc-status ok">✓ Отлично</div>
+          </div>
+        </div>
+        <div class="mc mc-4">
+          <div class="mc-icon a">🍬</div>
+          <div>
+            <div class="mc-label">Glucose risk</div>
+            <div class="mc-value">Watch</div>
+            <div class="mc-status watch">⚠ Следите</div>
+          </div>
+        </div>
+
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="phone-call-area">
+              <div class="phone-status">● На связи · 12:34</div>
+              <div class="phone-avatar">👵</div>
+              <div class="phone-name">Мама · Елена</div>
+              <div class="phone-timer">Длительность: 05:42</div>
+
+              <div class="phone-metrics-panel">
+                <div class="pm-row">
+                  <span class="pm-label">Пульс</span>
+                  <div class="pm-bar"><div class="pm-fill c-green" style="--w:74%;--d:0s"></div></div>
+                  <span class="pm-val ok">72 bpm</span>
+                </div>
+                <div class="pm-row">
+                  <span class="pm-label">Давление</span>
+                  <div class="pm-bar"><div class="pm-fill c-teal" style="--w:82%;--d:.25s"></div></div>
+                  <span class="pm-val info">Норма</span>
+                </div>
+                <div class="pm-row">
+                  <span class="pm-label">SpO₂</span>
+                  <div class="pm-bar"><div class="pm-fill c-green" style="--w:88%;--d:.45s"></div></div>
+                  <span class="pm-val ok">98%</span>
+                </div>
+                <div class="pm-row">
+                  <span class="pm-label">Стресс</span>
+                  <div class="pm-bar"><div class="pm-fill c-teal" style="--w:32%;--d:.65s"></div></div>
+                  <span class="pm-val info">Низкий</span>
+                </div>
+                <div class="pm-row">
+                  <span class="pm-label">Глюкоза</span>
+                  <div class="pm-bar"><div class="pm-fill c-amber" style="--w:62%;--d:.85s"></div></div>
+                  <span class="pm-val watch">Watch</span>
+                </div>
+              </div>
+            </div>
+            <div class="phone-controls">
+              <div class="p-ctrl p-ctrl-mute">🔇</div>
+              <div class="p-ctrl p-ctrl-end">📵</div>
+              <div class="p-ctrl p-ctrl-cam">📷</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="features">
-  <div class="feature-card">
-    <div class="feature-icon">📱</div>
-    <h3>No extra devices</h3>
-    <p>Monitoring happens through the camera during regular video calls. No wearables, no sensors, no setup. Your relatives don't change anything about how they live.</p>
+  <div class="scroll-hint">
+    <span>Прокрутите вниз</span>
+    <div class="scroll-arrow"></div>
   </div>
-  <div class="feature-card">
-    <div class="feature-icon">🧠</div>
-    <h3>Personal baseline</h3>
-    <p>We compare each person to their own normal — not population averages. The longer CherishKin watches, the more accurate early detection becomes.</p>
-  </div>
-  <div class="feature-card">
-    <div class="feature-icon">🔔</div>
-    <h3>Silent alerts</h3>
-    <p>When something changes — vitals, stress, glucose risk — adult children are notified quietly. The elderly person never feels watched or monitored.</p>
-  </div>
-</div>
+</section>
 
-<div class="binah-section">
-  <div class="binah-badge">
-    <div>
-      <h3>Powered by clinical-grade AI — 10 health indicators per call</h3>
-      <p>CherishKin's monitoring layer is built on Binah.ai — the world's leading video-based vital signs platform, trusted by 150+ companies in healthcare, insurance and wellness. All measurements run on-device. No video is stored. No data leaves the phone.</p>
-      <div class="indicators-list">
-        <span class="indicator-chip">Heart rate</span>
-        <span class="indicator-chip">Blood pressure</span>
-        <span class="indicator-chip">Heart rate variability</span>
-        <span class="indicator-chip">Oxygen saturation</span>
-        <span class="indicator-chip">Breathing rate</span>
-        <span class="indicator-chip">Stress index</span>
-        <span class="indicator-chip">HbA1c</span>
-        <span class="indicator-chip">Cholesterol risk</span>
-        <span class="indicator-chip">Glucose risk</span>
-        <span class="indicator-chip">Hemoglobin</span>
+<!-- ============================================================
+     PROBLEM
+     ============================================================ -->
+<section class="problem-section">
+  <div class="container">
+    <div class="problem-header">
+      <div class="section-label fade-up">Проблема</div>
+      <h2 class="section-title fade-up d1">
+        Вы беспокоитесь о маме или папе,<br>но не можете быть рядом каждый день.
+      </h2>
+      <p class="section-sub fade-up d2">
+        Расстояние, работа, жизнь — всё это мешает. Но тревога никуда не уходит.
+      </p>
+    </div>
+    <div class="problem-cards">
+      <div class="problem-card fade-up d1">
+        <div class="problem-card-icon">😟</div>
+        <h3>Вы не знаете,<br>как они себя чувствуют</h3>
+        <p>Прямо сейчас. В эту минуту. Нет способа узнать, если они не позвонят первыми — а они не любят беспокоить.</p>
+      </div>
+      <div class="problem-card fade-up d2">
+        <div class="problem-card-icon">📵</div>
+        <h3>Звонки редкие<br>и короткие</h3>
+        <p>Не успеваете спросить важное. Разговор скатывается к "всё хорошо" — даже если это не так.</p>
+      </div>
+      <div class="problem-card fade-up d3">
+        <div class="problem-card-icon">🏥</div>
+        <h3>Врач — раз<br>в несколько месяцев</h3>
+        <p>За 15 минут визита невозможно увидеть полную картину. Многое уже произошло задолго до этого.</p>
       </div>
     </div>
-    <div class="binah-stat">
-      <div class="big-num">10</div>
-      <div class="big-label">biomarkers<br>per call</div>
+    <div class="problem-bridge fade-up">
+      ✦ CherishKin решает это — без лишних устройств и без стресса
     </div>
   </div>
-</div>
+</section>
 
-<div class="health-section" id="health">
-  <div class="section-label">What CherishKin watches for</div>
-  <h2 class="section-title">Every call builds a health picture<br>no doctor's visit <em>can match</em></h2>
-  <p class="section-sub">A doctor sees your parent twice a year for 15 minutes. CherishKin watches over them every time you call — building a longitudinal health record from inside your family's daily life.</p>
+<!-- ============================================================
+     HOW IT WORKS
+     ============================================================ -->
+<section class="hiw-section" id="how-it-works">
+  <div class="container">
+    <div class="hiw-header">
+      <div class="section-label fade-up">Просто. Незаметно. Эффективно.</div>
+      <h2 class="section-title fade-up d1">Как работает CherishKin</h2>
+      <p class="section-sub fade-up d2">Три шага — и вы всегда в курсе того, что важно.</p>
+    </div>
+    <div class="hiw-steps">
+      <div class="hiw-connector"></div>
+      <div class="hiw-step fade-up d1">
+        <div>
+          <div class="step-num">1</div>
+          <div class="step-emoji">📱</div>
+        </div>
+        <div class="step-text">
+          <h3>Установите</h3>
+          <p>Скачайте приложение и установите его на телефон мамы или папы за 5 минут. Настроите дистанционно — через свой телефон, без визита.</p>
+        </div>
+      </div>
+      <div class="hiw-step fade-up d2">
+        <div>
+          <div class="step-num">2</div>
+          <div class="step-emoji">🤙</div>
+        </div>
+        <div class="step-text">
+          <h3>Звоните как обычно</h3>
+          <p>Просто звоните через CherishKin вместо обычных звонков. Разговаривайте, смейтесь, делитесь новостями — как всегда. ИИ работает незаметно.</p>
+        </div>
+      </div>
+      <div class="hiw-step fade-up d3">
+        <div>
+          <div class="step-num">3</div>
+          <div class="step-emoji">📊</div>
+        </div>
+        <div class="step-text">
+          <h3>Узнавайте о здоровье</h3>
+          <p>После каждого звонка — краткий отчёт для вас. Если что-то изменилось от базовой нормы, мы уведомим вас тихо и ясно.</p>
+        </div>
+      </div>
+    </div>
+    <div class="hiw-cta fade-up">
+      <a href="#" class="btn btn-secondary">Смотреть демо-видео ▶</a>
+    </div>
+  </div>
+</section>
 
-  <div class="conditions-grid">
-    <div class="condition-card">
-      <span class="condition-icon">❤️</span>
-      <h4>Heart & Blood Pressure</h4>
-      <p>Early signals of hypertension, arrhythmia, and heart failure appear weeks before a crisis. Cardiovascular disease is the #1 cause of death in people over 65 — and the most detectable early.</p>
-      <div class="condition-markers">
-        <span class="marker-tag">Heart rate</span>
-        <span class="marker-tag">Blood pressure</span>
-        <span class="marker-tag">HRV</span>
+<!-- ============================================================
+     HEALTH MONITORING
+     ============================================================ -->
+<section class="health-section" id="health">
+  <div class="container">
+    <div class="health-header">
+      <div class="section-label fade-up">Медицинский мониторинг</div>
+      <h2 class="section-title fade-up d1">10 биомаркеров здоровья —<br>во время каждого звонка</h2>
+      <p class="section-sub fade-up d2">
+        Никаких дополнительных устройств. Только камера смартфона и клинически валидированный ИИ.
+      </p>
+    </div>
+
+    <!-- Binah badge -->
+    <div class="binah-badge fade-up">
+      <div class="binah-logo">Binah<br>.ai</div>
+      <div class="binah-text">
+        <h3>Powered by clinical-grade AI — Binah.ai</h3>
+        <p>CherishKin использует Binah.ai — ведущую мировую платформу видеомониторинга жизненных показателей, которой доверяют 150+ компаний в сфере здравоохранения, страхования и велнеса. Вся обработка — на устройстве. Видео не хранится. Данные не покидают телефон.</p>
+      </div>
+      <div class="binah-stat">
+        <div class="binah-num">10</div>
+        <div class="binah-label">биомаркеров<br>за звонок</div>
       </div>
     </div>
-    <div class="condition-card">
-      <span class="condition-icon">🩸</span>
-      <h4>Diabetes Control</h4>
-      <p>HbA1c reflects average blood sugar over three months. Glucose risk trends between lab visits. For 415 million diabetics worldwide — continuous monitoring without a single finger prick.</p>
-      <div class="condition-markers">
-        <span class="marker-tag">HbA1c</span>
-        <span class="marker-tag">Glucose risk</span>
+
+    <!-- 10 metrics grid -->
+    <p class="metrics-section-title fade-up">Что мы измеряем</p>
+    <div class="metrics-grid">
+      <div class="metric-tile fade-up d1">
+        <div class="mt-icon">💓</div>
+        <div class="mt-name">Частота пульса</div>
+        <div class="mt-sub">Аритмия, тахикардия, кардиология</div>
+      </div>
+      <div class="metric-tile fade-up d2">
+        <div class="mt-icon">🩸</div>
+        <div class="mt-name">Артериальное давление</div>
+        <div class="mt-sub">Гипертония, риск инсульта</div>
+      </div>
+      <div class="metric-tile fade-up d3">
+        <div class="mt-icon">📈</div>
+        <div class="mt-name">HRV — вариабельность</div>
+        <div class="mt-sub">Стресс, вегетативная НС</div>
+      </div>
+      <div class="metric-tile fade-up d4">
+        <div class="mt-icon">🫁</div>
+        <div class="mt-name">SpO₂ — кислород</div>
+        <div class="mt-sub">ХОБЛ, пневмония, постковид</div>
+      </div>
+      <div class="metric-tile fade-up d5">
+        <div class="mt-icon">😤</div>
+        <div class="mt-name">Частота дыхания</div>
+        <div class="mt-sub">Астма, дыхательные нарушения</div>
+      </div>
+      <div class="metric-tile fade-up d1">
+        <div class="mt-icon">🧠</div>
+        <div class="mt-name">Индекс стресса</div>
+        <div class="mt-sub">Хронический стресс, депрессия</div>
+      </div>
+      <div class="metric-tile fade-up d2">
+        <div class="mt-icon">🩺</div>
+        <div class="mt-name">HbA1c</div>
+        <div class="mt-sub">Диабет 2 типа, контроль сахара</div>
+      </div>
+      <div class="metric-tile fade-up d3">
+        <div class="mt-icon">📊</div>
+        <div class="mt-name">Риск холестерина</div>
+        <div class="mt-sub">Атеросклероз, метаболизм</div>
+      </div>
+      <div class="metric-tile fade-up d4">
+        <div class="mt-icon">🍬</div>
+        <div class="mt-name">Риск глюкозы</div>
+        <div class="mt-sub">Преддиабет, толерантность</div>
+      </div>
+      <div class="metric-tile fade-up d5">
+        <div class="mt-icon">💉</div>
+        <div class="mt-name">Гемоглобин</div>
+        <div class="mt-sub">Анемия — каждый 4-й пожилой</div>
       </div>
     </div>
-    <div class="condition-card">
-      <span class="condition-icon">🫁</span>
-      <h4>Respiratory Health</h4>
-      <p>Oxygen saturation and breathing rate catch COPD, pneumonia, asthma flares, and post-COVID complications silently. A 2–3% SpO₂ drop that feels like fatigue can signal serious deterioration.</p>
-      <div class="condition-markers">
-        <span class="marker-tag">SpO₂</span>
-        <span class="marker-tag">Breathing rate</span>
+
+    <!-- Condition cards -->
+    <p class="conditions-header fade-up">Что CherishKin отслеживает и зачем</p>
+    <div class="conditions-grid">
+      <div class="cond-card fade-up d1">
+        <div class="cond-icon">❤️</div>
+        <h4>Сердце и давление</h4>
+        <p>Ранние признаки гипертонии, аритмии и сердечной недостаточности видны за недели до кризиса. Сердечно-сосудистые болезни — причина смерти №1 у людей старше 65 лет.</p>
+        <div class="cond-tags">
+          <span class="cond-tag">Пульс</span>
+          <span class="cond-tag">АД</span>
+          <span class="cond-tag">HRV</span>
+        </div>
+      </div>
+      <div class="cond-card fade-up d2">
+        <div class="cond-icon">🩸</div>
+        <h4>Диабет</h4>
+        <p>HbA1c отражает средний уровень сахара за 3 месяца. Для 415 млн диабетиков по всему миру — непрерывный мониторинг без единого укола в палец.</p>
+        <div class="cond-tags">
+          <span class="cond-tag">HbA1c</span>
+          <span class="cond-tag">Риск глюкозы</span>
+        </div>
+      </div>
+      <div class="cond-card fade-up d3">
+        <div class="cond-icon">🫁</div>
+        <h4>Дыхание</h4>
+        <p>SpO₂ и частота дыхания фиксируют ХОБЛ, пневмонию, постковид-синдром задолго до симптомов. Падение на 2–3% — серьёзный сигнал.</p>
+        <div class="cond-tags">
+          <span class="cond-tag">SpO₂</span>
+          <span class="cond-tag">Дыхание</span>
+        </div>
+      </div>
+      <div class="cond-card fade-up d1">
+        <div class="cond-icon">💉</div>
+        <h4>Анемия</h4>
+        <p>Гемоглобин находит то, что годами скрывалось за «просто устала». Анемия — у каждого 4-го пожилого человека, и она часто остаётся без диагноза.</p>
+        <div class="cond-tags">
+          <span class="cond-tag">Гемоглобин</span>
+        </div>
+      </div>
+      <div class="cond-card fade-up d2">
+        <div class="cond-icon">🧠</div>
+        <h4>Стресс и психика</h4>
+        <p>Баланс симпатической и парасимпатической нервной системы — хронический стресс и депрессию часто до того, как человек сам признаётся.</p>
+        <div class="cond-tags">
+          <span class="cond-tag">Стресс</span>
+          <span class="cond-tag">HRV</span>
+        </div>
+      </div>
+      <div class="cond-card fade-up d3">
+        <div class="cond-icon">📊</div>
+        <h4>Метаболический риск</h4>
+        <p>Холестерин + глюкоза + давление = полная картина сердечно-сосудистого риска. Метаболический синдром развивается незаметно — годами.</p>
+        <div class="cond-tags">
+          <span class="cond-tag">Холестерин</span>
+          <span class="cond-tag">АД</span>
+          <span class="cond-tag">Глюкоза</span>
+        </div>
       </div>
     </div>
-    <div class="condition-card">
-      <span class="condition-icon">💉</span>
-      <h4>Anemia</h4>
-      <p>Hemoglobin tracking finds what years of "just feeling tired" were hiding. Anemia affects 1 in 4 elderly people and is routinely missed until it becomes severe enough to require hospitalization.</p>
-      <div class="condition-markers">
-        <span class="marker-tag">Hemoglobin</span>
+
+    <!-- Disclaimer -->
+    <div class="disclaimer fade-up">
+      <div class="disclaimer-icon">🩺</div>
+      <div>
+        <h4>CherishKin не заменяет врача</h4>
+        <p>Он помогает вам <em>прийти к врачу до того, как станет поздно</em>. CherishKin — инструмент мониторинга и раннего предупреждения, не диагностическое устройство. Когда что-то отклоняется от базовой нормы — мы сообщаем семье. А семья сообщает врачу. Именно так технологии должны работать в медицине.</p>
       </div>
     </div>
-    <div class="condition-card">
-      <span class="condition-icon">🧠</span>
-      <h4>Stress & Mental Health</h4>
-      <p>Sympathetic and parasympathetic nervous system balance reveals chronic stress, anxiety disorders, and early depression — often before the person admits there's a problem.</p>
-      <div class="condition-markers">
-        <span class="marker-tag">Stress index</span>
-        <span class="marker-tag">Parasympathetic activity</span>
-        <span class="marker-tag">HRV</span>
-      </div>
-    </div>
-    <div class="condition-card">
-      <span class="condition-icon">📊</span>
-      <h4>Metabolic & Vascular Risk</h4>
-      <p>Cholesterol trends combined with glucose and blood pressure paint a full cardiovascular risk picture. Metabolic syndrome develops silently — CherishKin watches for its fingerprints across every call.</p>
-      <div class="condition-markers">
-        <span class="marker-tag">Cholesterol risk</span>
-        <span class="marker-tag">Blood pressure</span>
-        <span class="marker-tag">Glucose risk</span>
+
+    <!-- Privacy -->
+    <div class="privacy-block fade-up">
+      <div class="privacy-icon">🔒</div>
+      <div>
+        <h5>Конфиденциальность прежде всего</h5>
+        <p>Видео не записывается и не хранится. Весь анализ происходит на устройстве в реальном времени. Данные зашифрованы и не покидают телефон. Соответствует HIPAA и GDPR.</p>
       </div>
     </div>
   </div>
+</section>
 
-  <div class="health-disclaimer">
-    <div class="disclaimer-icon">🩺</div>
-    <div class="disclaimer-text">
-      <h4>CherishKin doesn't replace your doctor</h4>
-      <p>It makes sure you <em>see one before it's too late</em>. CherishKin is a monitoring and early-warning tool, not a diagnostic device. When something changes from baseline, we tell the family — and the family tells the doctor. That's the right way to use technology in healthcare.</p>
+<!-- ============================================================
+     FAQ
+     ============================================================ -->
+<section class="faq-section" id="faq">
+  <div class="container">
+    <div class="faq-header">
+      <div class="section-label fade-up">FAQ</div>
+      <h2 class="section-title fade-up d1">Часто задаваемые вопросы</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item fade-up d1">
+        <button class="faq-q">
+          Приложение записывает видео моих родителей?
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-a">
+          <p>Нет. Вся обработка происходит в реальном времени прямо на устройстве. Видео никогда не записывается и не передаётся на серверы. Данные анализируются мгновенно и сразу удаляются — на сервер уходят только числовые результаты.</p>
+        </div>
+      </div>
+      <div class="faq-item fade-up d2">
+        <button class="faq-q">
+          Родителям сложно это освоить?
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-a">
+          <p>Интерфейс специально разработан для пожилых людей: крупные кнопки, большой текст, один экран — одно действие. Пожилой родственник просто принимает звонок как обычно. Никаких дополнительных действий. Мы помогаем с первичной настройкой бесплатно.</p>
+        </div>
+      </div>
+      <div class="faq-item fade-up d3">
+        <button class="faq-q">
+          Насколько точны медицинские данные?
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-a">
+          <p>Алгоритмы Binah.ai прошли клинические испытания и подтверждены в рецензируемых исследованиях. Мы не заменяем врача, но помогаем вовремя заметить отклонения от личной нормы. Чем дольше CherishKin наблюдает, тем точнее становится персональная базовая линия.</p>
+        </div>
+      </div>
+      <div class="faq-item fade-up d4">
+        <button class="faq-q">
+          На каких устройствах работает?
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-a">
+          <p>iOS 14+ и Android 10+. Работает на смартфонах и планшетах. Для пожилых родственников рекомендуем планшет — экран больше, удобнее видеть. Фронтальная камера любого современного устройства достаточно точна для анализа.</p>
+        </div>
+      </div>
+      <div class="faq-item fade-up d5">
+        <button class="faq-q">
+          Что происходит, если приложение замечает отклонение?
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-a">
+          <p>Вы получаете мягкое уведомление без пугающих формулировок: «Есть изменения, рекомендуем обратить внимание». Пожилой человек при этом ничего не получает — чтобы не создавать лишней тревоги. Данные с описанием доступны для обсуждения с врачом.</p>
+        </div>
+      </div>
+      <div class="faq-item fade-up">
+        <button class="faq-q">
+          Можно пользоваться, если у родителей нет смартфона?
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-a">
+          <p>Да. Мы предлагаем специальный планшет CherishKin Pad с предустановленным приложением — простейшее решение «из коробки» для тех, кто никогда не пользовался смартфоном. Одна большая кнопка — и звонок начат.</p>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</section>
 
-<div class="tagline-section">
-  <h2>The insight happens in the <em>moment of love</em></h2>
-  <p>Families already call their parents and grandparents. CherishKin makes those moments count — monitoring health while you simply talk, laugh, and stay close.</p>
-</div>
-
-<div class="how-it-works" id="how-it-works">
-  <div class="section-label">How it works</div>
-  <h2 class="section-title">Three steps to peace of mind</h2>
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">1</div>
-      <h4>Family connects</h4>
-      <p>Create a family group in CherishKin. Invite your elderly relative and other family members with a simple link. Takes two minutes.</p>
+<!-- ============================================================
+     FINAL CTA
+     ============================================================ -->
+<section class="cta-section" id="download">
+  <div class="cta-blob-1"></div>
+  <div class="cta-blob-2"></div>
+  <div class="cta-inner container">
+    <h2>Начните заботиться о близких умнее — уже сегодня.</h2>
+    <p>30 дней бесплатно. Без привязки карты. Настройка за 5 минут.</p>
+    <div class="cta-buttons">
+      <a href="#" class="btn btn-white btn-store">
+        <svg width="18" height="22" viewBox="0 0 18 22" fill="none">
+          <path d="M14.5 11.5c-.01-2.42 1.98-3.58 2.07-3.64-1.13-1.65-2.88-1.88-3.5-1.9-1.48-.15-2.9.87-3.65.87-.75 0-1.9-.85-3.12-.83C4.57 6.02 2.9 7 2 8.58c-1.83 3.17-.47 7.86 1.3 10.44.87 1.26 1.9 2.67 3.25 2.62 1.31-.05 1.8-.84 3.38-.84 1.57 0 2.02.84 3.4.81 1.41-.02 2.3-1.27 3.15-2.54.99-1.45 1.4-2.87 1.42-2.94-.03-.01-2.72-1.04-2.74-4.13zM12.02 3.28C12.72 2.42 13.2 1.23 13.07 0c-1.04.04-2.3.69-3.04 1.54-.67.77-1.25 1.99-1.09 3.16 1.16.09 2.34-.59 3.08-1.42z" fill="var(--teal)"/>
+        </svg>
+        Скачать для iOS
+      </a>
+      <a href="#" class="btn btn-white btn-store">
+        <svg width="18" height="20" viewBox="0 0 18 20" fill="none">
+          <path d="M.5 1.27L9.56 10 .5 18.73A1 1 0 010 18V2a1 1 0 01.5-.73zM13.19 6.72l2.06-1.19 1.38.8c.54.31.87.89.87 1.5v.34c0 .6-.33 1.18-.87 1.49l-1.38.8-2.06-1.19V6.72zM2 .5l8.37 4.84-2.3 2.3L2 .5zm8.07 12.16L2 19.5l6.07-7.14 2.3 2.3z" fill="var(--teal)"/>
+        </svg>
+        Скачать для Android
+      </a>
     </div>
-    <div class="step">
-      <div class="step-num">2</div>
-      <h4>Call as usual</h4>
-      <p>During every video call, AI silently measures 10 health indicators through the camera. Nobody changes anything. Nobody feels monitored.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">3</div>
-      <h4>Stay ahead</h4>
-      <p>CherishKin builds a personal health baseline over time. You receive an alert only when something meaningfully deviates — giving you time to act, not react.</p>
-    </div>
+    <p class="cta-contact">Или напишите нам — поможем настроить вместе: <a href="mailto:hello@cherishkin.ru">hello@cherishkin.ru</a></p>
   </div>
-</div>
+</section>
 
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
 <footer>
-  <div class="logo">🍒 Cherish<span style="color:var(--terracotta)">Kin</span></div>
-  <span>Early stage · Seeking partners & investors</span>
-  <a href="mailto:yuleshster@gmail.com" class="contact-link">yuleshster@gmail.com</a>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <svg class="logo-cherry" width="40" height="38" viewBox="0 0 42 40" fill="none">
+            <path d="M21 3 Q19 10 12 16" stroke="#5A8C3A" stroke-width="1.9" stroke-linecap="round"/>
+            <path d="M21 3 Q23 10 30 16" stroke="#5A8C3A" stroke-width="1.9" stroke-linecap="round"/>
+            <path d="M21 5 C24 1.5 29.5 4 27 9 C24.5 6.5 21 5 21 5Z" fill="#6AAF4E"/>
+            <circle cx="12" cy="25" r="9" fill="#8B1A1A"/>
+            <circle cx="13" cy="24" r="7.5" fill="#C0392B"/>
+            <circle cx="9.5" cy="21" r="2.5" fill="rgba(255,255,255,0.32)"/>
+            <circle cx="30" cy="25" r="9" fill="#8B1A1A"/>
+            <circle cx="31" cy="24" r="7.5" fill="#C0392B"/>
+            <circle cx="27.5" cy="21" r="2.5" fill="rgba(255,255,255,0.26)"/>
+          </svg>
+          <span class="logo-text" style="color:#FAF7F2">Cherish<span class="logo-kin" style="color:#F4A0A0">Kin</span></span>
+        </a>
+        <p class="footer-tagline">Family. Connected. Cared.<br>Видеозвонки с заботой о здоровье близких.</p>
+        <div class="footer-social">
+          <a href="#" class="soc-btn" aria-label="ВКонтакте">В</a>
+          <a href="#" class="soc-btn" aria-label="Telegram">Т</a>
+          <a href="#" class="soc-btn" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Продукт</h5>
+        <ul>
+          <li><a href="#how-it-works">Как работает</a></li>
+          <li><a href="#health">Мониторинг здоровья</a></li>
+          <li><a href="#pricing">Тарифы</a></li>
+          <li><a href="#download">Скачать</a></li>
+          <li><a href="#">Блог</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Компания</h5>
+        <ul>
+          <li><a href="#">О нас</a></li>
+          <li><a href="#">Команда</a></li>
+          <li><a href="#">Карьера</a></li>
+          <li><a href="#">Пресс-кит</a></li>
+          <li><a href="#">Инвесторам</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Поддержка</h5>
+        <ul>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#">Центр помощи</a></li>
+          <li><a href="mailto:hello@cherishkin.ru">hello@cherishkin.ru</a></li>
+          <li><a href="#">Политика конф.</a></li>
+          <li><a href="#">Условия использ.</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 CherishKin. Все права защищены.</span>
+      <div class="footer-badges">
+        <span class="fbadge">HIPAA ✓</span>
+        <span class="fbadge">GDPR ✓</span>
+        <span class="fbadge">Binah.ai</span>
+      </div>
+    </div>
+  </div>
 </footer>
 
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+(function(){
+  'use strict';
+
+  /* ---- Sticky nav ---- */
+  var nav = document.getElementById('nav');
+  window.addEventListener('scroll', function(){
+    nav.classList.toggle('scrolled', window.scrollY > 10);
+  }, {passive: true});
+
+  /* ---- Hamburger / mobile menu ---- */
+  var hamburger = document.getElementById('hamburger');
+  var mobileMenu = document.getElementById('mobile-menu');
+  hamburger.addEventListener('click', function(){
+    var isOpen = mobileMenu.classList.toggle('open');
+    hamburger.classList.toggle('open', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+  mobileMenu.querySelectorAll('a').forEach(function(link){
+    link.addEventListener('click', function(){
+      mobileMenu.classList.remove('open');
+      hamburger.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  /* ---- Scroll animations (IntersectionObserver) ---- */
+  var fadeEls = document.querySelectorAll('.fade-up');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, {threshold: 0.12});
+    fadeEls.forEach(function(el){ io.observe(el); });
+  } else {
+    fadeEls.forEach(function(el){ el.classList.add('visible'); });
+  }
+
+  /* ---- FAQ accordion ---- */
+  document.querySelectorAll('.faq-q').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var item = btn.closest('.faq-item');
+      var wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(function(i){
+        i.classList.remove('open');
+      });
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+
+  /* ---- Pricing toggle ---- */
+  var toggle = document.getElementById('priceToggle');
+  var annual = false;
+  function updatePrices(){
+    document.querySelectorAll('.price-val').forEach(function(el){
+      el.textContent = annual ? el.dataset.annual : el.dataset.monthly;
+    });
+  }
+  toggle.addEventListener('click', function(){
+    annual = !annual;
+    toggle.classList.toggle('annual', annual);
+    toggle.setAttribute('aria-checked', annual);
+    updatePrices();
+  });
+  toggle.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle.click(); }
+  });
+
+  /* ---- Smooth scroll for anchor links ---- */
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      var target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        var offset = 80;
+        var top = target.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({top: top, behavior: 'smooth'});
+      }
+    });
+  });
+
+})();
+</script>
 </body>
 </html>
