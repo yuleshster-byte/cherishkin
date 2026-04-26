@@ -1348,13 +1348,20 @@ footer{background:var(--dark);padding:60px 0 28px}
   var heroPlayBtn = document.getElementById('heroPlayBtn');
   if (heroVideo && heroPlayBtn) {
     heroPlayBtn.addEventListener('click', function() {
-      heroVideo.play();
+      heroVideo.controls = true;
       heroPlayBtn.classList.add('hidden');
+      var p = heroVideo.play();
+      if (p !== undefined) {
+        p.catch(function() {
+          heroPlayBtn.classList.remove('hidden');
+        });
+      }
     });
     heroVideo.addEventListener('pause', function() {
       heroPlayBtn.classList.remove('hidden');
     });
     heroVideo.addEventListener('ended', function() {
+      heroVideo.controls = false;
       heroPlayBtn.classList.remove('hidden');
     });
   }
