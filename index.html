@@ -672,12 +672,45 @@ footer{background:var(--dark);padding:60px 0 28px}
   .binah-stat{width:100%;max-width:200px}
 }
 
+/* ============================================================
+   VIDEO PLAYERS
+   ============================================================ */
+.hero-video-wrap{
+  position:relative;border-radius:8px;overflow:hidden;
+  box-shadow:0 8px 32px rgba(107,39,55,.28);
+  width:100%;
+}
+.hero-video{width:100%;display:block;border-radius:8px}
+.hero-play-btn{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:72px;height:72px;border-radius:50%;
+  background:#fff;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(0,0,0,.22);
+  transition:transform .2s,box-shadow .2s;
+}
+.hero-play-btn:hover{
+  transform:translate(-50%,-50%) scale(1.1);
+  box-shadow:0 8px 28px rgba(107,39,55,.35);
+}
+.hero-play-btn svg{width:28px;height:28px;margin-left:5px}
+.hero-play-btn.hidden{display:none}
+
+.hiw-video-wrap{
+  max-width:720px;margin:0 auto;
+  border-radius:8px;overflow:hidden;
+  box-shadow:0 8px 32px rgba(107,39,55,.18);
+}
+.hiw-video{width:100%;display:block;border-radius:8px}
+
 @media(max-width:768px){
   .nav-links,.nav-actions{display:none}
   .hamburger{display:flex}
 
-  .hero-inner{grid-template-columns:1fr;gap:0;padding-bottom:0}
-  .hero-visual{display:none}
+  .hero-inner{grid-template-columns:1fr;gap:32px;padding-bottom:0}
+  .hero-visual{display:flex;justify-content:center}
+  .hero-video-wrap{max-width:100%}
   .hero{padding:88px 0 60px}
   .hero-title{font-size:38px}
   .hero-desc{font-size:16px;max-width:100%}
@@ -803,87 +836,17 @@ footer{background:var(--dark);padding:60px 0 28px}
       </div>
     </div>
 
-    <!-- Phone visual -->
+    <!-- Hero video -->
     <div class="hero-visual fade-up d2">
-      <div class="phone-wrapper">
-        <!-- Floating metric cards -->
-        <div class="mc mc-1">
-          <div class="mc-icon g">💓</div>
-          <div>
-            <div class="mc-label">Heart rate</div>
-            <div class="mc-value">72 bpm</div>
-            <div class="mc-status ok">✓ Норма</div>
-          </div>
-        </div>
-        <div class="mc mc-2">
-          <div class="mc-icon t">🩸</div>
-          <div>
-            <div class="mc-label">Blood pressure</div>
-            <div class="mc-value">120/78</div>
-            <div class="mc-status ok">✓ Норма</div>
-          </div>
-        </div>
-        <div class="mc mc-3">
-          <div class="mc-icon g">🫁</div>
-          <div>
-            <div class="mc-label">SpO₂</div>
-            <div class="mc-value">98%</div>
-            <div class="mc-status ok">✓ Отлично</div>
-          </div>
-        </div>
-        <div class="mc mc-4">
-          <div class="mc-icon a">🍬</div>
-          <div>
-            <div class="mc-label">Glucose risk</div>
-            <div class="mc-value">Watch</div>
-            <div class="mc-status watch">⚠ Следите</div>
-          </div>
-        </div>
-
-        <div class="phone-frame">
-          <div class="phone-notch"></div>
-          <div class="phone-screen">
-            <div class="phone-call-area">
-              <div class="phone-status">● На связи · 12:34</div>
-              <div class="phone-avatar">👵</div>
-              <div class="phone-name">Мама · Елена</div>
-              <div class="phone-timer">Длительность: 05:42</div>
-
-              <div class="phone-metrics-panel">
-                <div class="pm-row">
-                  <span class="pm-label">Пульс</span>
-                  <div class="pm-bar"><div class="pm-fill c-green" style="--w:74%;--d:0s"></div></div>
-                  <span class="pm-val ok">72 bpm</span>
-                </div>
-                <div class="pm-row">
-                  <span class="pm-label">Давление</span>
-                  <div class="pm-bar"><div class="pm-fill c-teal" style="--w:82%;--d:.25s"></div></div>
-                  <span class="pm-val info">Норма</span>
-                </div>
-                <div class="pm-row">
-                  <span class="pm-label">SpO₂</span>
-                  <div class="pm-bar"><div class="pm-fill c-green" style="--w:88%;--d:.45s"></div></div>
-                  <span class="pm-val ok">98%</span>
-                </div>
-                <div class="pm-row">
-                  <span class="pm-label">Стресс</span>
-                  <div class="pm-bar"><div class="pm-fill c-teal" style="--w:32%;--d:.65s"></div></div>
-                  <span class="pm-val info">Низкий</span>
-                </div>
-                <div class="pm-row">
-                  <span class="pm-label">Глюкоза</span>
-                  <div class="pm-bar"><div class="pm-fill c-amber" style="--w:62%;--d:.85s"></div></div>
-                  <span class="pm-val watch">Watch</span>
-                </div>
-              </div>
-            </div>
-            <div class="phone-controls">
-              <div class="p-ctrl p-ctrl-mute">🔇</div>
-              <div class="p-ctrl p-ctrl-end">📵</div>
-              <div class="p-ctrl p-ctrl-cam">📷</div>
-            </div>
-          </div>
-        </div>
+      <div class="hero-video-wrap">
+        <video id="heroVideo" class="hero-video" poster="poster.jpg" playsinline preload="metadata">
+          <source src="CherishKin_web.mp4" type="video/mp4">
+        </video>
+        <button class="hero-play-btn" id="heroPlayBtn" aria-label="Смотреть видео">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="5,3 19,12 5,21" fill="#6B2737"/>
+          </svg>
+        </button>
       </div>
     </div>
   </div>
@@ -975,7 +938,11 @@ footer{background:var(--dark);padding:60px 0 28px}
       </div>
     </div>
     <div class="hiw-cta fade-up">
-      <a href="#" class="btn btn-secondary">Смотреть демо-видео ▶</a>
+      <div class="hiw-video-wrap">
+        <video id="hiwVideo" class="hiw-video" poster="poster.jpg" playsinline preload="metadata" controls muted>
+          <source src="CherishKin_web.mp4" type="video/mp4">
+        </video>
+      </div>
     </div>
   </div>
 </section>
@@ -1369,6 +1336,36 @@ footer{background:var(--dark);padding:60px 0 28px}
   toggle.addEventListener('keydown', function(e){
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle.click(); }
   });
+
+  /* ---- Hero video play button ---- */
+  var heroVideo = document.getElementById('heroVideo');
+  var heroPlayBtn = document.getElementById('heroPlayBtn');
+  if (heroVideo && heroPlayBtn) {
+    heroPlayBtn.addEventListener('click', function() {
+      heroVideo.play();
+      heroPlayBtn.classList.add('hidden');
+    });
+    heroVideo.addEventListener('pause', function() {
+      heroPlayBtn.classList.remove('hidden');
+    });
+    heroVideo.addEventListener('ended', function() {
+      heroPlayBtn.classList.remove('hidden');
+    });
+  }
+
+  /* ---- HIW video autoplay on viewport entry ---- */
+  var hiwVideo = document.getElementById('hiwVideo');
+  if (hiwVideo && 'IntersectionObserver' in window) {
+    var vio = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          hiwVideo.play().catch(function(){});
+          vio.unobserve(hiwVideo);
+        }
+      });
+    }, { threshold: 0.5 });
+    vio.observe(hiwVideo);
+  }
 
   /* ---- Smooth scroll for anchor links ---- */
   document.querySelectorAll('a[href^="#"]').forEach(function(a){
