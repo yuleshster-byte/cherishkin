@@ -681,21 +681,25 @@ footer{background:var(--dark);padding:60px 0 28px}
   width:100%;
 }
 .hero-video{width:100%;display:block;border-radius:8px}
-.hero-play-btn{
-  position:absolute;top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  width:72px;height:72px;border-radius:50%;
-  background:#fff;border:none;cursor:pointer;
+.hero-video-overlay{
+  position:absolute;inset:0;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 20px rgba(0,0,0,.22);
-  transition:transform .2s,box-shadow .2s;
+  background:rgba(0,0,0,.08);border-radius:8px;
+  transition:background .2s;
+  z-index:10;
 }
-.hero-play-btn:hover{
-  transform:translate(-50%,-50%) scale(1.1);
-  box-shadow:0 8px 28px rgba(107,39,55,.35);
+.hero-video-overlay:hover{background:rgba(0,0,0,.18)}
+.hero-video-overlay.hidden{display:none}
+.hero-play-circle{
+  width:72px;height:72px;border-radius:50%;
+  background:#fff;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(0,0,0,.28);
+  transition:transform .2s;
+  pointer-events:none;
 }
-.hero-play-btn svg{width:28px;height:28px;margin-left:5px}
-.hero-play-btn.hidden{display:none}
+.hero-video-overlay:hover .hero-play-circle{transform:scale(1.1)}
+.hero-play-circle svg{width:28px;height:28px;margin-left:5px}
 
 .hiw-video-wrap{
   max-width:720px;margin:0 auto;
@@ -845,11 +849,13 @@ footer{background:var(--dark);padding:60px 0 28px}
           <source src="CherishKin_web.mp4" type="video/mp4; codecs=avc1.42E01E,mp4a.40.2">
           Ваш браузер не поддерживает видео.
         </video>
-        <button class="hero-play-btn" id="heroPlayBtn" aria-label="Смотреть видео">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <polygon points="5,3 19,12 5,21" fill="#6B2737"/>
-          </svg>
-        </button>
+        <div class="hero-video-overlay" id="heroOverlay" role="button" aria-label="Смотреть видео" tabindex="0">
+          <div class="hero-play-circle">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="5,3 19,12 5,21" fill="#6B2737"/>
+            </svg>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1343,26 +1349,28 @@ footer{background:var(--dark);padding:60px 0 28px}
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle.click(); }
   });
 
-  /* ---- Hero video play button ---- */
+  /* ---- Hero video overlay ---- */
   var heroVideo = document.getElementById('heroVideo');
-  var heroPlayBtn = document.getElementById('heroPlayBtn');
-  if (heroVideo && heroPlayBtn) {
-    heroPlayBtn.addEventListener('click', function() {
+  var heroOverlay = document.getElementById('heroOverlay');
+  if (heroVideo && heroOverlay) {
+    function startHeroVideo() {
+      heroOverlay.classList.add('hidden');
       heroVideo.controls = true;
-      heroPlayBtn.classList.add('hidden');
       var p = heroVideo.play();
       if (p !== undefined) {
         p.catch(function() {
-          heroPlayBtn.classList.remove('hidden');
+          heroOverlay.classList.remove('hidden');
+          heroVideo.controls = false;
         });
       }
-    });
-    heroVideo.addEventListener('pause', function() {
-      heroPlayBtn.classList.remove('hidden');
+    }
+    heroOverlay.addEventListener('click', startHeroVideo);
+    heroOverlay.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); startHeroVideo(); }
     });
     heroVideo.addEventListener('ended', function() {
       heroVideo.controls = false;
-      heroPlayBtn.classList.remove('hidden');
+      heroOverlay.classList.remove('hidden');
     });
   }
 
