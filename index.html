@@ -840,22 +840,17 @@ footer{background:var(--dark);padding:60px 0 28px}
       </div>
     </div>
 
-    <!-- Hero video -->
+    <!-- Hero video poster → links to demo in how-it-works -->
     <div class="hero-visual fade-up d2">
       <div class="hero-video-wrap">
-        <video id="heroVideo" class="hero-video" poster="poster.jpg" playsinline preload="metadata">
-          <source src="CherishKin_web.webm" type="video/webm">
-          <source src="CherishKin_web.mp4" type="video/mp4">
-          <source src="CherishKin_web.mp4" type="video/mp4; codecs=avc1.42E01E,mp4a.40.2">
-          Ваш браузер не поддерживает видео.
-        </video>
-        <div class="hero-video-overlay" id="heroOverlay" role="button" aria-label="Смотреть видео" tabindex="0">
+        <img src="poster.jpg" alt="Демо CherishKin" class="hero-video">
+        <a href="#how-it-works" class="hero-video-overlay" id="heroOverlay" aria-label="Смотреть демо-видео">
           <div class="hero-play-circle">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <polygon points="5,3 19,12 5,21" fill="#6B2737"/>
             </svg>
           </div>
-        </div>
+        </a>
       </div>
     </div>
   </div>
@@ -1349,28 +1344,25 @@ footer{background:var(--dark);padding:60px 0 28px}
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle.click(); }
   });
 
-  /* ---- Hero video overlay ---- */
-  var heroVideo = document.getElementById('heroVideo');
+  /* ---- Hero poster → scroll to demo & play ---- */
   var heroOverlay = document.getElementById('heroOverlay');
-  if (heroVideo && heroOverlay) {
-    function startHeroVideo() {
-      heroOverlay.classList.add('hidden');
-      heroVideo.controls = true;
-      var p = heroVideo.play();
-      if (p !== undefined) {
-        p.catch(function() {
-          heroOverlay.classList.remove('hidden');
-          heroVideo.controls = false;
-        });
+  var hiwVideo = document.getElementById('hiwVideo');
+  if (heroOverlay) {
+    heroOverlay.addEventListener('click', function(e) {
+      e.preventDefault();
+      var target = document.getElementById('how-it-works');
+      if (target) {
+        var top = target.getBoundingClientRect().top + window.scrollY - 80;
+        window.scrollTo({ top: top, behavior: 'smooth' });
       }
-    }
-    heroOverlay.addEventListener('click', startHeroVideo);
-    heroOverlay.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); startHeroVideo(); }
-    });
-    heroVideo.addEventListener('ended', function() {
-      heroVideo.controls = false;
-      heroOverlay.classList.remove('hidden');
+      if (hiwVideo) {
+        setTimeout(function() {
+          hiwVideo.controls = true;
+          hiwVideo.muted = false;
+          var p = hiwVideo.play();
+          if (p !== undefined) { p.catch(function() {}); }
+        }, 800);
+      }
     });
   }
 
